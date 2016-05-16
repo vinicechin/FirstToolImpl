@@ -52,6 +52,18 @@ public class ImageChooser extends java.util.Observable{
             e.printStackTrace();
         }
     }
+	
+	public void orderByColor() {
+		
+	}
+	
+	public void orderByYear() {
+		
+	}
+	
+	public void orderBySize() {
+		
+	}
 
     public List<ImageInfo> getImageList() {
         return imageList;
