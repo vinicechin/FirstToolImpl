@@ -1,12 +1,8 @@
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.Observable;
 
 /**
- * Created by Pichau on 12/04/2016.
+ * Created by Vinicius on 12/04/2016.
  */
 public class testePanel extends JPanel {
     private int width, height;

@@ -1,11 +1,8 @@
-import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by Vinicius on 15/05/2016.
@@ -24,46 +21,57 @@ public class ImageChooser extends java.util.Observable{
             try{
                 r = new FileReader(name);
                 Scanner s = new Scanner(r);
+                s.useLocale(Locale.US);
 
-                //read the number of vertexes and edges from the file
+                //pula comentarios
+                s.nextLine();
+                s.nextLine();
+
+                //le o numero de imagens do arquivo
                 int numImages = s.nextInt();
 
-                //clear the vertex and edge lists from the model
+                //limpa a lista de imagens antes de usar
                 this.imageList.clear();
 
-                //for each vertex read it from the file in the right order of parameters and add it to the model
+                //adiciona a lista cada imagem e seus parametros
                 s.nextLine();
                 for(int i=0;i<numImages;i++){
-                    ImageInfo imageTemp = new ImageInfo(s.nextLine());
-                    System.out.println(imageTemp.getName());
+                    int fw = s.nextInt();
+                    int fh = s.nextInt();
+                    float pw = s.nextFloat();
+                    float ph = s.nextFloat();
+                    int year = s.nextInt();
+                    s.skip(" ");
+                    ImageInfo imageTemp = new ImageInfo(fw, fh, pw, ph, year, s.nextLine());
                     imageList.add(imageTemp);
-                    this.notifyObservers();
                 }
             } finally {
                 if(r != null){
                     r.close();
                 }
             }
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
+            this.setChanged();
+            this.notifyObservers();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-	
-	public void orderByColor() {
-		
-	}
-	
-	public void orderByYear() {
-		
-	}
-	
-	public void orderBySize() {
-		
-	}
+
+    public void orderByColor() {
+        Collections.sort(imageList, (img1, img2) -> img1.compareToByColor(img2));
+    }
+
+    public void orderByYear() {
+        Collections.sort(imageList, (img1, img2) -> img1.compareToByYear(img2));
+    }
+
+    public void orderBySize() {
+        Collections.sort(imageList, (img1, img2) -> img1.compareToBySize(img2));
+    }
+
+    public void orderByName() {
+        Collections.sort(imageList, (img1, img2) -> img1.compareTo(img2));
+    }
 
     public List<ImageInfo> getImageList() {
         return imageList;
