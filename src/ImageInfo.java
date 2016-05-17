@@ -12,6 +12,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private float	paintingHeigth;
     private int		colorValue;
     private Image 	img;
+    private int         width;
+    private int         height;
+    private int         x;
+    private int         y;
 
     /**********************************************************************************************/
     /** Creator */
@@ -46,6 +50,22 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public float getTotalSize() {
         return this.paintingHeigth * this.paintingWidth;
     }
+    
+    public int getWidth(){
+        return this.width;
+    }
+    
+    public int getHeight(){
+        return this.height;
+    }
+    
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY(){
+        return this.y;
+    }
 
     /** Setters */
     public void setName(String name) {
@@ -62,6 +82,22 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public void setColorValue(int colorValue) {
         this.colorValue = colorValue;
+    }
+    
+    public void setWidth(int width){
+        this.width = width;
+    }
+    
+    public void setHeight(int height){
+        this.height = height;
+    }
+    
+    public void setX(int x){
+        this.x = x;
+    }
+    
+    public void setY(int y){
+        this.y = y;
     }
 
     /**********************************************************************************************/

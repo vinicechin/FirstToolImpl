@@ -6,14 +6,14 @@ import java.awt.*;
  */
 public class teste extends JFrame {
     private testePanel        ImageInfoPanel;
-    private testeScrollPanel  ImageListPanel;
+    private JScrollPane		  ImageListPanel;
     private JMenu             fileMenu;
     private JMenuBar          menuBar;
     private ButtonGroup       buttonGroup1;
     private JRadioButton      byColor;
     private JRadioButton      byYear;
     private JRadioButton      bySize;
-    private listPanel showListPanel;
+    private testeScrollPanel  showListPanel;
 
     public teste(String name){
         super(name);
@@ -24,9 +24,9 @@ public class teste extends JFrame {
 
     private void initComponents(){
         buttonGroup1    = new javax.swing.ButtonGroup();
-        showListPanel   = new listPanel();
+        showListPanel   = new testeScrollPanel();
         ImageInfoPanel  = new testePanel(600,600);
-        ImageListPanel  = new testeScrollPanel(showListPanel);
+        ImageListPanel  = new JScrollPane(showListPanel);
         byColor         = new javax.swing.JRadioButton();
         byYear          = new javax.swing.JRadioButton();
         bySize          = new javax.swing.JRadioButton();
@@ -35,13 +35,15 @@ public class teste extends JFrame {
 
         //create the frame menu File and add buttons to it
         fileMenu.setText("File");
-        fileMenu.add(ImageListPanel.getLoadFile());
+        fileMenu.add(showListPanel.getLoadFile());
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
         //configure frame and panels
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        showListPanel.setPreferredSize(new Dimension(150,2000));
+        
         javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(ImageInfoPanel);
         ImageInfoPanel.setLayout(ImageInfoPanelLayout);
         ImageInfoPanelLayout.setHorizontalGroup(
@@ -55,7 +57,8 @@ public class teste extends JFrame {
 
         ImageListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
         ImageListPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
+        ImageListPanel.setBounds(0, 0, 200, 600);
+        
         //configure buttons group
         buttonGroup1.add(byColor);
         byColor.setText("Color");
@@ -102,7 +105,7 @@ public class teste extends JFrame {
 
     private void jRadioButtonActionPerformed(java.awt.event.ActionEvent evt, String orderType) {
         //System.out.println("action button pressed, order type: " + orderType);
-        this.ImageListPanel.setOrderType(orderType);
+        this.showListPanel.setOrderType(orderType);
     }
 
     /** The entry main() method */
