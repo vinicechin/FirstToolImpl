@@ -5,7 +5,7 @@ import java.awt.*;
  * Created by Vinicius on 12/05/2016.
  */
 public class teste extends JFrame {
-    private testePanel        ImageInfoPanel;
+    private MainPanel        ImageInfoPanel;
     private JScrollPane		  ImageListPanel;
     private JMenu             fileMenu;
     private JMenuBar          menuBar;
@@ -24,8 +24,8 @@ public class teste extends JFrame {
 
     private void initComponents(){
         buttonGroup1    = new javax.swing.ButtonGroup();
-        showListPanel   = new testeScrollPanel();
-        ImageInfoPanel  = new testePanel(600,600);
+        ImageInfoPanel  = new MainPanel(600,600);
+        showListPanel   = new testeScrollPanel(ImageInfoPanel);
         ImageListPanel  = new JScrollPane(showListPanel);
         byColor         = new javax.swing.JRadioButton();
         byYear          = new javax.swing.JRadioButton();
@@ -106,6 +106,7 @@ public class teste extends JFrame {
     private void jRadioButtonActionPerformed(java.awt.event.ActionEvent evt, String orderType) {
         //System.out.println("action button pressed, order type: " + orderType);
         this.showListPanel.setOrderType(orderType);
+        this.showListPanel.repaint();
     }
 
     /** The entry main() method */
