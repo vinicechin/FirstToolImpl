@@ -36,13 +36,12 @@ public class ImageChooser extends java.util.Observable{
                 //adiciona a lista cada imagem e seus parametros
                 s.nextLine();
                 for(int i=0;i<numImages;i++){
-                    int fw = s.nextInt();
-                    int fh = s.nextInt();
+                    float color = s.nextFloat();
                     float pw = s.nextFloat();
                     float ph = s.nextFloat();
                     int year = s.nextInt();
                     s.skip(" ");
-                    ImageInfo imageTemp = new ImageInfo(fw, fh, pw, ph, year, s.nextLine());
+                    ImageInfo imageTemp = new ImageInfo(color, pw, ph, year, s.nextLine());
                     imageList.add(imageTemp);
                 }
             } finally {

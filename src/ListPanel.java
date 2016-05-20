@@ -20,6 +20,7 @@ public class ListPanel extends JPanel implements Observer{
     private String orderType;
     public boolean loaded;
     private MainPanel mainPanel;
+    private SelectionController mouseControl;
 
     /************************************************************************************/
     public ListPanel(MainPanel mainPanel) {
@@ -29,19 +30,24 @@ public class ListPanel extends JPanel implements Observer{
         this.mainPanel = mainPanel;
         this.imageChooser.addObserver(this);
 
+        //add the mouse controllers to the panel
+        this.mouseControl = new SelectionController(this, mainPanel);
+        this.addMouseListener(mouseControl);
+        this.addMouseMotionListener(mouseControl);
+
         //load a model from a .txt file
         this.loadFile = new AbstractAction("Load File") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
-                chooser.setCurrentDirectory(new File("."));
+                chooser.setCurrentDirectory(new File("./images"));
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
                 chooser.setFileFilter(filter);
 
                 int returnVal = chooser.showOpenDialog(null);
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    imageChooser.loadImages(chooser.getSelectedFile().getName());
+                    imageChooser.loadImages(chooser.getSelectedFile().getPath());
                     setImagesDisplay();
                     ListPanel.this.repaint();
                 }
@@ -58,6 +64,10 @@ public class ListPanel extends JPanel implements Observer{
     /** getters and setters */
     public AbstractAction getLoadFile() {
         return loadFile;
+    }
+
+    public ImageChooser getImageChooser() {
+        return imageChooser;
     }
 
     public String getOrderType() {
@@ -89,9 +99,9 @@ public class ListPanel extends JPanel implements Observer{
     /************************************************************************************/
     //reordena lista quando ouver um evento de reordenação
     public void rearrangeImageList(){
-        int squareWidth = (6 * this.getWidth()) / 10;
+        int squareWidth = (8 * this.getWidth()) / 10;
         int squareHeight = squareWidth;
-        int squareLeft = (2 * this.getWidth())/ 10;
+        int squareLeft = (this.getWidth())/ 10;
         int listHeight = 0;
         
         int cont = 0;
@@ -106,20 +116,23 @@ public class ListPanel extends JPanel implements Observer{
         this.setPreferredSize(new Dimension(150,listHeight+200));
         // seta primeira imagem da lista no mainpanel
         this.mainPanel.setImg(imageChooser.getImageList().get(0).getImgOrig());
+        this.mainPanel.setColor(imageChooser.getImageList().get(0).getColorValue());
+        this.mainPanel.setSize(imageChooser.getImageList().get(0).getPaintingWidth(), imageChooser.getImageList().get(0).getPaintingHeigth());
+        this.mainPanel.setYear(imageChooser.getImageList().get(0).getYear());
         this.mainPanel.repaint();
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
     public void setImagesDisplay(){
-        int squareWidth = (6 * this.getWidth()) / 10;
+        int squareWidth = (8 * this.getWidth()) / 10;
         int squareHeight = squareWidth;
-        int squareLeft = (2 * this.getWidth())/ 10;
+        int squareLeft = (this.getWidth())/ 10;
         int listHeight = 0;
         
         int cont = 0;
         for(ImageInfo i : imageChooser.getImageList()){
             try {
-                BufferedImage image = ImageIO.read(new File(i.getName()));
+                BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
                 // seta no listpanel
                 i.setImgOrig(image);
                 if(image.getWidth() > image.getHeight()){
@@ -140,6 +153,9 @@ public class ListPanel extends JPanel implements Observer{
         this.setPreferredSize(new Dimension(150,listHeight+200));
         // seta primeira imagem da lista no mainpanel
         this.mainPanel.setImg(imageChooser.getImageList().get(0).getImgOrig());
+        this.mainPanel.setColor(imageChooser.getImageList().get(0).getColorValue());
+        this.mainPanel.setSize(imageChooser.getImageList().get(0).getPaintingWidth(), imageChooser.getImageList().get(0).getPaintingHeigth());
+        this.mainPanel.setYear(imageChooser.getImageList().get(0).getYear());
         this.mainPanel.repaint();
     }
     

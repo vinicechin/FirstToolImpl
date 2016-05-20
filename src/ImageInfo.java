@@ -6,28 +6,24 @@ import java.awt.*;
 public class ImageInfo implements Comparable<ImageInfo>{
     private String 	name;
     private int 	year;
-    private int 	fileWidth;
-    private int 	fileHeigth;
     private float	paintingWidth;
     private float	paintingHeigth;
-    private int		colorValue;
+    private float	colorValue;
     private Image 	imgList;
-    private Image       imgOrig;
-    private int         width;
-    private int         height;
-    private int         x;
-    private int         y;
+    private Image   imgOrig;
+    private int     width;
+    private int     height;
+    private int     x;
+    private int     y;
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(int fw, int fh, float pw, float ph, int year, String name){
+    public ImageInfo(float colorValue, float pw, float ph, int year, String name){
         this.name = name;
         this.year = year;
-        this.fileWidth = fw;
-        this.fileHeigth = fh;
         this.paintingWidth = pw;
         this.paintingHeigth = ph;
-        this.colorValue = 0;
+        this.colorValue = colorValue;
     }
 
     /**********************************************************************************************/
@@ -48,14 +44,22 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return this.year;
     }
 
-    public int getColorValue() {
+    public float getColorValue() {
         return this.colorValue;
     }
 
     public float getTotalSize() {
         return this.paintingHeigth * this.paintingWidth;
     }
-    
+
+    public float getPaintingWidth() {
+        return paintingWidth;
+    }
+
+    public float getPaintingHeigth() {
+        return paintingHeigth;
+    }
+
     public int getWidth(){
         return this.width;
     }
@@ -89,7 +93,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.year = year;
     }
 
-    public void setColorValue(int colorValue) {
+    public void setColorValue(float colorValue) {
         this.colorValue = colorValue;
     }
     
@@ -118,10 +122,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public int compareToByColor(ImageInfo o) {
         /* For Ascending order*/
-        return this.colorValue - o.getColorValue();
+        //return (int) (this.colorValue - o.getColorValue());
 
         /* For Descending order*/
-        //return o.getColorValue() - this.colorValue;
+        return (int) (o.getColorValue() - this.colorValue);
     }
 
     public int compareToByYear(ImageInfo o) {
@@ -138,6 +142,12 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
         /* For Descending order*/
         //return o.getTotalSize() - this.getTotalSize();
+    }
+
+    public boolean contains(Point p){
+        //returns true if the point p is inside this picture and false if not
+
+        return (this.x < p.x) && (this.y < p.y) && (this.x + this.width > p.x) && (this.y + this.height > p.y);
     }
 
     /**********************************************************************************************/

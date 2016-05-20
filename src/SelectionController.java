@@ -1,0 +1,115 @@
+import java.awt.event.*;
+
+/**
+ * Created by Vinicius on 22/05/2015.
+ */
+public class SelectionController extends MouseAdapter implements WindowListener{
+    private ListPanel listPanel;
+    private MainPanel mainPanel;
+
+    //constructor
+    public SelectionController(ListPanel listPanel, MainPanel mainPanel){
+        super();
+        this.listPanel = listPanel;
+        this.mainPanel = mainPanel;
+    }
+
+    //setters
+    public void setListPanel(ListPanel panel) {
+        this.listPanel = panel;
+    }
+
+    public void setMainPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    //getters
+    public ListPanel getListPanel() {
+        return this.listPanel;
+    }
+
+    public MainPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //if the left button of the mouse was pressed
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            //selects clicked picture if the click was made over a picture
+            for (ImageInfo i : this.listPanel.getImageChooser().getImageList()) {
+                if (i.contains(e.getPoint())) {
+                    //seta o mainpanel com a imagem selecionada
+                    this.mainPanel.setImg(i.getImgOrig());
+                    this.mainPanel.setColor(i.getColorValue());
+                    this.mainPanel.setSize(i.getPaintingWidth(), i.getPaintingHeigth());
+                    this.mainPanel.setYear(i.getYear());
+                    this.mainPanel.repaint();
+                }
+            }
+            //repaint the panel
+            this.listPanel.repaint();
+        }
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+}

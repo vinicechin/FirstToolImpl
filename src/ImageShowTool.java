@@ -24,7 +24,7 @@ public class ImageShowTool extends JFrame {
 
     private void initComponents(){
         buttonGroup1    = new javax.swing.ButtonGroup();
-        ImageInfoPanel  = new MainPanel(600,600);
+        ImageInfoPanel  = new MainPanel();
         showListPanel   = new ListPanel(ImageInfoPanel);
         ImageListPanel  = new JScrollPane(showListPanel);
         byColor         = new javax.swing.JRadioButton();
