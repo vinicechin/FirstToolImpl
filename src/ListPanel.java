@@ -18,9 +18,9 @@ public class ListPanel extends JPanel implements Observer{
     private AbstractAction loadFile;
     private ImageChooser imageChooser;
     private String orderType;
-    public boolean loaded;
     private MainPanel mainPanel;
     private SelectionController mouseControl;
+    private boolean loadImages;
 
     /************************************************************************************/
     public ListPanel(MainPanel mainPanel) {
@@ -48,6 +48,7 @@ public class ListPanel extends JPanel implements Observer{
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     imageChooser.loadImages(chooser.getSelectedFile().getPath());
+                    loadImages = true;
                     setImagesDisplay();
                     ListPanel.this.repaint();
                 }
@@ -56,7 +57,7 @@ public class ListPanel extends JPanel implements Observer{
                 }
             }
         };
-        this.loaded = false;
+        this.loadImages = false;
         this.repaint();
     }
 
@@ -91,34 +92,43 @@ public class ListPanel extends JPanel implements Observer{
                 default:
                     imageChooser.orderByName();
             }
-            rearrangeImageList();            
+            setImagesDisplay();            
             this.repaint();
         }
     }
 
     /************************************************************************************/
-    //reordena lista quando ouver um evento de reordenação
-    public void rearrangeImageList(){
-        int squareWidth = (8 * this.getWidth()) / 10;
-        int squareHeight = squareWidth;
-        int squareLeft = (this.getWidth())/ 10;
-        int listHeight = 0;
-        
-        int cont = 0;
-        for(ImageInfo i : imageChooser.getImageList()){
-            i.setWidth(squareWidth);
-            i.setHeight(squareHeight);
-            i.setX(squareLeft);
-            listHeight = 10+squareWidth*cont+cont*10;
-            i.setY(listHeight);
-            cont++;
-        }
-        this.setPreferredSize(new Dimension(150,listHeight+200));
+    //seta parametros da imageInfo na imagem atual
+    public void setImageInfo(ImageInfo i, int squareWidth, int squareHeight, int squareLeft, int listHeight){
+        i.setWidth(squareWidth);
+        i.setHeight(squareHeight);
+        i.setX(squareLeft);
+        i.setY(listHeight);
+    }
+    
+    //carrega imagens dos arquivos
+    public void loadImages(ImageInfo i, int squareWidth, int squareHeight){
+        try {
+                BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
+                // seta no listpanel
+                i.setImgOrig(image);
+                if(image.getWidth() > image.getHeight()){
+                    i.setImgList(image.getScaledInstance(squareWidth, -1, SCALE_SMOOTH));
+                } else {
+                    i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
+                }
+            } catch (IOException ex) {
+                System.out.println("Não encontrou a imagem " + i.getName());
+            }
+    }
+    
+    //atualiza main com a imagem selecionada
+    public void updateImageMain(ImageInfo image){
         // seta primeira imagem da lista no mainpanel
-        this.mainPanel.setImg(imageChooser.getImageList().get(0).getImgOrig());
-        this.mainPanel.setColor(imageChooser.getImageList().get(0).getColorValue());
-        this.mainPanel.setSize(imageChooser.getImageList().get(0).getPaintingWidth(), imageChooser.getImageList().get(0).getPaintingHeigth());
-        this.mainPanel.setYear(imageChooser.getImageList().get(0).getYear());
+        this.mainPanel.setImg(image.getImgOrig());
+        this.mainPanel.setColor(image.getColorValue());
+        this.mainPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
+        this.mainPanel.setYear(image.getYear());
         this.mainPanel.repaint();
     }
     
@@ -131,37 +141,20 @@ public class ListPanel extends JPanel implements Observer{
         
         int cont = 0;
         for(ImageInfo i : imageChooser.getImageList()){
-            try {
-                BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
-                // seta no listpanel
-                i.setImgOrig(image);
-                if(image.getWidth() > image.getHeight()){
-                    i.setImgList(image.getScaledInstance(squareWidth, -1, SCALE_SMOOTH));
-                } else {
-                    i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
-                }
-            } catch (IOException ex) {
-                System.out.println("Não encontrou a imagem " + i.getName());
-            }
-            i.setWidth(squareWidth);
-            i.setHeight(squareHeight);
-            i.setX(squareLeft);
+            if(this.loadImages == true)
+                loadImages(i, squareWidth, squareHeight);
+            //seta imageInfo
             listHeight = 10+squareWidth*cont+cont*10;
-            i.setY(listHeight);
+            setImageInfo(i, squareWidth, squareHeight, squareLeft, listHeight);
             cont++;
         }
+        this.loadImages = false;
         this.setPreferredSize(new Dimension(150,listHeight+200));
-        // seta primeira imagem da lista no mainpanel
-        this.mainPanel.setImg(imageChooser.getImageList().get(0).getImgOrig());
-        this.mainPanel.setColor(imageChooser.getImageList().get(0).getColorValue());
-        this.mainPanel.setSize(imageChooser.getImageList().get(0).getPaintingWidth(), imageChooser.getImageList().get(0).getPaintingHeigth());
-        this.mainPanel.setYear(imageChooser.getImageList().get(0).getYear());
-        this.mainPanel.repaint();
+        updateImageMain(imageChooser.getImageList().get(0));
     }
     
     @Override
     public void paintComponent(Graphics g){
-        this.removeAll();
         super.paintComponent(g);
         drawImageList(g);
     }

@@ -39,12 +39,7 @@ public class SelectionController extends MouseAdapter implements WindowListener{
             //selects clicked picture if the click was made over a picture
             for (ImageInfo i : this.listPanel.getImageChooser().getImageList()) {
                 if (i.contains(e.getPoint())) {
-                    //seta o mainpanel com a imagem selecionada
-                    this.mainPanel.setImg(i.getImgOrig());
-                    this.mainPanel.setColor(i.getColorValue());
-                    this.mainPanel.setSize(i.getPaintingWidth(), i.getPaintingHeigth());
-                    this.mainPanel.setYear(i.getYear());
-                    this.mainPanel.repaint();
+                    this.listPanel.updateImageMain(i);
                 }
             }
             //repaint the panel

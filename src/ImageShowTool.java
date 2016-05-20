@@ -5,15 +5,15 @@ import java.awt.*;
  * Created by Vinicius on 12/05/2016.
  */
 public class ImageShowTool extends JFrame {
-    private MainPanel        ImageInfoPanel;
-    private JScrollPane		  ImageListPanel;
+    private MainPanel         ImageInfoPanel;
+    private JScrollPane       ImageListPanel;
     private JMenu             fileMenu;
     private JMenuBar          menuBar;
     private ButtonGroup       buttonGroup1;
     private JRadioButton      byColor;
     private JRadioButton      byYear;
     private JRadioButton      bySize;
-    private ListPanel  showListPanel;
+    private ListPanel         showListPanel;
 
     public ImageShowTool(String name){
         super(name);
@@ -42,7 +42,7 @@ public class ImageShowTool extends JFrame {
         //configure frame and panels
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        showListPanel.setPreferredSize(new Dimension(150,2000));
+        showListPanel.setPreferredSize(new Dimension(150,500));
         
         javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(ImageInfoPanel);
         ImageInfoPanel.setLayout(ImageInfoPanelLayout);
