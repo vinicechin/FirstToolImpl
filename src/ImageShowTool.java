@@ -106,7 +106,6 @@ public class ImageShowTool extends JFrame {
     private void jRadioButtonActionPerformed(java.awt.event.ActionEvent evt, String orderType) {
         //System.out.println("action button pressed, order type: " + orderType);
         this.showListPanel.setOrderType(orderType);
-        System.out.println("button pressed");
     }
 
     /** The entry main() method */

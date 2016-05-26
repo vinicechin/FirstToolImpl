@@ -8,6 +8,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private int 	year;
     private float	paintingWidth;
     private float	paintingHeigth;
+    private float   hueValue;
     private float	colorValue;
     private Image 	imgList;
     private Image   imgOrig;
@@ -18,12 +19,13 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(float colorValue, float pw, float ph, int year, String name){
+    public ImageInfo(float hueValue, float colorValue, float pw, float ph, int year, String name){
         this.name = name;
         this.year = year;
         this.paintingWidth = pw;
         this.paintingHeigth = ph;
         this.colorValue = colorValue;
+        this.hueValue = hueValue;
     }
 
     /**********************************************************************************************/
@@ -46,6 +48,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public float getColorValue() {
         return this.colorValue;
+    }
+
+    public float getHueValue() {
+        return hueValue;
     }
 
     public float getTotalSize() {
@@ -96,7 +102,11 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public void setColorValue(float colorValue) {
         this.colorValue = colorValue;
     }
-    
+
+    public void setHueValue(float hueValue) {
+        this.hueValue = hueValue;
+    }
+
     public void setWidth(int width){
         this.width = width;
     }
@@ -123,9 +133,11 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public int compareToByColor(ImageInfo o) {
         /* For Ascending order*/
         //return (int) (this.colorValue - o.getColorValue());
+        return (int) (this.hueValue - o.getHueValue());
 
         /* For Descending order*/
-        return (int) (o.getColorValue() - this.colorValue);
+        //return (int) (o.getColorValue() - this.colorValue);
+        //return (int) (o.getHueValue() - this.hueValue);
     }
 
     public int compareToByYear(ImageInfo o) {

@@ -24,6 +24,9 @@ public class MainPanel extends JPanel {
         int squareLeft = (int) ((2 * this.getWidth())/ 10);
         if(this.img != null) {
             g.drawImage(this.img, squareLeft, squareLeft/2, this);
+            g.setColor(Color.red);
+            g.fillRect(5,50,85,60);
+            g.setColor(Color.black);
             g.drawString("Ano: " + String.valueOf(this.year), 10, 70);
             g.drawString("Largura: " + String.valueOf(this.pictureWidth), 10, 85);
             g.drawString("Altura: " + String.valueOf(this.pictureHeight), 10, 100);
