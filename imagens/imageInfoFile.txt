@@ -1,9 +1,9 @@
 //numero de imagens
-//tamanho_arquivo(largura e altura) tamanho_pintura(largura e altura) ano_criação nome
+//colorValue tamanho_pintura(largura e altura) ano_criação nome
 6
-508 621 46.5 38.5 1886 Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpeg
-1758 2574 27 19 1886 Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg
-2481 3035 46 38 1886 Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpeg
-459 599 41.5 32.5 1886 Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpeg
-1998 2406 39.5 29.5 1886 Van_Gogh_-_Selbstbildnis.jpeg
-530 643 41 33.5 1887 Self-Portrait6.jpeg
+19436.586 46.5 38.5 1886 Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg
+14209.4795 27 19 1886 Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg
+4191.077 46 38 1886 Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg
+13993.083 41.5 32.5 1886 Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg
+22287.28 39.5 29.5 1886 Van_Gogh_-_Selbstbildnis.jpeg
+16150.173 41 33.5 1887 Self-Portrait6.jpg
