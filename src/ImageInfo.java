@@ -5,11 +5,16 @@ import java.awt.*;
  */
 public class ImageInfo implements Comparable<ImageInfo>{
     private String 	name;
-    private int 	year;
+    private float 	year;
     private float	paintingWidth;
     private float	paintingHeigth;
+
+    private float   redValue;
+    private float   greenValue;
+    private float   blueValue;
+    private float   rgbValue;
     private float   hueValue;
-    private float	colorValue;
+
     private Image 	imgList;
     private Image   imgOrig;
     private int     width;
@@ -19,12 +24,15 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(float hueValue, float colorValue, float pw, float ph, int year, String name){
+    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float pw, float ph, float year, String name){
         this.name = name;
         this.year = year;
         this.paintingWidth = pw;
         this.paintingHeigth = ph;
-        this.colorValue = colorValue;
+        this.redValue = redValue;
+        this.greenValue = greenValue;
+        this.blueValue = blueValue;
+        this.rgbValue = rgbValue;
         this.hueValue = hueValue;
     }
 
@@ -42,12 +50,24 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return this.imgOrig;
     }
 
-    public int getYear() {
+    public float getYear() {
         return this.year;
     }
 
-    public float getColorValue() {
-        return this.colorValue;
+    public float getRedValue() {
+        return redValue;
+    }
+
+    public float getGreenValue() {
+        return greenValue;
+    }
+
+    public float getBlueValue() {
+        return blueValue;
+    }
+
+    public float getRgbValue() {
+        return rgbValue;
     }
 
     public float getHueValue() {
@@ -95,12 +115,24 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.imgOrig = img;
     }
 
-    public void setYear(int year) {
+    public void setYear(float year) {
         this.year = year;
     }
 
-    public void setColorValue(float colorValue) {
-        this.colorValue = colorValue;
+    public void setRedValue(float redValue) {
+        this.redValue = redValue;
+    }
+
+    public void setGreenValue(float greenValue) {
+        this.greenValue = greenValue;
+    }
+
+    public void setBlueValue(float blueValue) {
+        this.blueValue = blueValue;
+    }
+
+    public void setRgbValue(float rgbValue) {
+        this.rgbValue = rgbValue;
     }
 
     public void setHueValue(float hueValue) {
@@ -130,19 +162,26 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return name.compareTo(o.getName());
     }
 
-    public int compareToByColor(ImageInfo o) {
-        /* For Ascending order*/
-        //return (int) (this.colorValue - o.getColorValue());
-        return (int) (this.hueValue - o.getHueValue());
-
-        /* For Descending order*/
-        //return (int) (o.getColorValue() - this.colorValue);
-        //return (int) (o.getHueValue() - this.hueValue);
+    public int compareToByColor(ImageInfo o, String colorType) {
+        switch (colorType) {
+            case "Red":
+                return (int) ((this.redValue - o.getRedValue())*100);
+            case "Green":
+                return (int) ((this.greenValue - o.getGreenValue())*100);
+            case "Blue":
+                return (int) ((this.blueValue - o.getBlueValue())*100);
+            case "RGB":
+                return (int) ((this.rgbValue - o.getRgbValue())*100);
+            case "HSL":
+                return (int) ((this.hueValue - o.getHueValue())*100);
+            default:
+                return (int) ((this.hueValue - o.getHueValue())*100);
+        }
     }
 
     public int compareToByYear(ImageInfo o) {
         /* For Ascending order*/
-        return this.year - o.getYear();
+        return (int) ((this.year - o.getYear())*100);
 
         /* For Descending order*/
         //return o.getYear() - this.year;
@@ -150,7 +189,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public int compareToBySize(ImageInfo o) {
         /* For Ascending order*/
-        return Math.round(this.getTotalSize() - o.getTotalSize());
+        return (int)((this.getTotalSize() - o.getTotalSize())*100);
 
         /* For Descending order*/
         //return o.getTotalSize() - this.getTotalSize();

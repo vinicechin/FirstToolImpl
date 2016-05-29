@@ -18,6 +18,7 @@ public class ListPanel extends JPanel implements Observer{
     private AbstractAction loadFile;
     private ImageChooser imageChooser;
     private String orderType;
+    private String colorOrderType;
     private MainPanel mainPanel;
     private SelectionController mouseControl;
     private boolean loadImages;
@@ -26,7 +27,8 @@ public class ListPanel extends JPanel implements Observer{
     public ListPanel(MainPanel mainPanel) {
         super();
         this.imageChooser = new ImageChooser();
-        this.orderType = "name";
+        this.orderType = "color";
+        this.colorOrderType = "HSL";
         this.mainPanel = mainPanel;
         this.imageChooser.addObserver(this);
 
@@ -75,6 +77,10 @@ public class ListPanel extends JPanel implements Observer{
         return orderType;
     }
 
+    public String getColorOrderType() {
+        return colorOrderType;
+    }
+
     public void setOrderType(String orderType) {
         if(this.orderType != orderType){
             this.orderType = orderType;
@@ -87,12 +93,21 @@ public class ListPanel extends JPanel implements Observer{
                     imageChooser.orderBySize();
                     break;
                 case "color":
-                    imageChooser.orderByColor();
+                    imageChooser.orderByColor(this.colorOrderType);
                     break;
                 default:
                     imageChooser.orderByName();
             }
             setImagesDisplay();            
+            this.repaint();
+        }
+    }
+
+    public void setColorOrderType(String colorOrderType) {
+        this.colorOrderType = colorOrderType;
+        if(this.orderType == "color") {
+            imageChooser.orderByColor(this.colorOrderType);
+            setImagesDisplay();
             this.repaint();
         }
     }
@@ -126,31 +141,30 @@ public class ListPanel extends JPanel implements Observer{
     public void updateImageMain(ImageInfo image){
         // seta primeira imagem da lista no mainpanel
         this.mainPanel.setImg(image.getImgOrig());
-        this.mainPanel.setColor(image.getColorValue());
         this.mainPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
-        this.mainPanel.setYear(image.getYear());
+        this.mainPanel.setYear((int)image.getYear());
         this.mainPanel.repaint();
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
     public void setImagesDisplay(){
-        int squareWidth = (8 * this.getWidth()) / 10;
-        int squareHeight = squareWidth;
-        int squareLeft = (this.getWidth())/ 10;
-        int listHeight = 0;
-        
-        int cont = 0;
+        int squareHeight = this.getHeight();
+        int squareWidth = squareHeight;
+        int squareTop = 0;
+        int listWidth = 0;
+
         for(ImageInfo i : imageChooser.getImageList()){
             if(this.loadImages == true)
                 loadImages(i, squareWidth, squareHeight);
             //seta imageInfo
-            listHeight = 10+squareWidth*cont+cont*10;
-            setImageInfo(i, squareWidth, squareHeight, squareLeft, listHeight);
-            cont++;
+            setImageInfo(i, i.getImgList().getWidth(this), squareHeight, listWidth, squareTop);
+            listWidth += i.getImgList().getWidth(this) + 3;
         }
         this.loadImages = false;
-        this.setPreferredSize(new Dimension(150,listHeight+200));
-        updateImageMain(imageChooser.getImageList().get(0));
+        if(imageChooser.getImageList().size() > 0) {
+            this.setPreferredSize(new Dimension(listWidth+200,100));
+            updateImageMain(imageChooser.getImageList().get(0));
+        }
     }
     
     @Override

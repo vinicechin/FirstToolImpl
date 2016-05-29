@@ -10,7 +10,6 @@ public class MainPanel extends JPanel {
     private int year;
     private float pictureWidth;
     private float pictureHeight;
-    private float color;
 
     public MainPanel(){
         super();
@@ -23,7 +22,7 @@ public class MainPanel extends JPanel {
         
         int squareLeft = (int) ((2 * this.getWidth())/ 10);
         if(this.img != null) {
-            g.drawImage(this.img, squareLeft, squareLeft/2, this);
+            g.drawImage(this.img, squareLeft, squareLeft/8, this);
             g.setColor(Color.red);
             g.fillRect(5,50,85,60);
             g.setColor(Color.black);
@@ -53,9 +52,5 @@ public class MainPanel extends JPanel {
     public void setSize(float w, float h) {
         this.pictureWidth = w;
         this.pictureHeight = h;
-    }
-
-    public void setColor(float color) {
-        this.color = color;
     }
 }

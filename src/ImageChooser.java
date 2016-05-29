@@ -36,13 +36,16 @@ public class ImageChooser extends java.util.Observable{
                 //adiciona a lista cada imagem e seus parametros
                 s.nextLine();
                 for(int i=0;i<numImages;i++){
+                    float red = s.nextFloat();
+                    float green = s.nextFloat();
+                    float blue = s.nextFloat();
+                    float rgb = s.nextFloat();
                     float hue = s.nextFloat();
-                    float color = 0;
                     float pw = s.nextFloat();
                     float ph = s.nextFloat();
-                    int year = s.nextInt();
-                    s.skip(" ");
-                    ImageInfo imageTemp = new ImageInfo(hue, color, pw, ph, year, s.nextLine());
+                    float year = s.nextFloat();
+                    s.skip("          ");
+                    ImageInfo imageTemp = new ImageInfo(red, green, blue, rgb, hue, pw, ph, year, s.nextLine());
                     imageList.add(imageTemp);
                 }
             } finally {
@@ -57,8 +60,8 @@ public class ImageChooser extends java.util.Observable{
         }
     }
 
-    public void orderByColor() {
-        Collections.sort(imageList, (img1, img2) -> img1.compareToByColor(img2));
+    public void orderByColor(String colorType) {
+        Collections.sort(imageList, (img1, img2) -> img1.compareToByColor(img2, colorType));
     }
 
     public void orderByYear() {
