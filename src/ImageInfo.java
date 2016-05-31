@@ -16,6 +16,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private float   hueValue;
 
     private Image 	imgList;
+    private Image   imgListReal;
     private Image   imgOrig;
     private int     width;
     private int     height;
@@ -45,7 +46,11 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public Image getImgList() {
         return this.imgList;
     }
-    
+
+    public Image getImgListReal() {
+        return imgListReal;
+    }
+
     public Image getImgOrig() {
         return this.imgOrig;
     }
@@ -110,7 +115,11 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public void setImgList(Image img) {
         this.imgList = img;
     }
-    
+
+    public void setImgListReal(Image imgListReal) {
+        this.imgListReal = imgListReal;
+    }
+
     public void setImgOrig(Image img) {
         this.imgOrig = img;
     }

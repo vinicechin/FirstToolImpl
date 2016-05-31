@@ -19,6 +19,7 @@ public class ListPanel extends JPanel implements Observer{
     private ImageChooser imageChooser;
     private String orderType;
     private String colorOrderType;
+    private String listShowType;
     private MainPanel mainPanel;
     private SelectionController mouseControl;
     private boolean loadImages;
@@ -29,6 +30,7 @@ public class ListPanel extends JPanel implements Observer{
         this.imageChooser = new ImageChooser();
         this.orderType = "color";
         this.colorOrderType = "HSL";
+        this.listShowType = "modified";
         this.mainPanel = mainPanel;
         this.imageChooser.addObserver(this);
 
@@ -122,15 +124,17 @@ public class ListPanel extends JPanel implements Observer{
     }
     
     //carrega imagens dos arquivos
-    public void loadImages(ImageInfo i, int squareWidth, int squareHeight){
+    public void loadImages(ImageInfo i, int squareWidth, int squareHeight, float maxWidth, float maxHeight){
         try {
                 BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
                 // seta no listpanel
                 i.setImgOrig(image);
                 if(image.getWidth() > image.getHeight()){
                     i.setImgList(image.getScaledInstance(squareWidth, -1, SCALE_SMOOTH));
+                    i.setImgListReal(image.getScaledInstance((int) (squareWidth*i.getPaintingWidth()/maxWidth), -1, SCALE_SMOOTH));
                 } else {
                     i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
+                    i.setImgListReal(image.getScaledInstance(-1, (int) (squareHeight*i.getPaintingHeigth()/maxHeight), SCALE_SMOOTH));
                 }
             } catch (IOException ex) {
                 System.out.println("Não encontrou a imagem " + i.getName());
@@ -152,13 +156,30 @@ public class ListPanel extends JPanel implements Observer{
         int squareWidth = squareHeight;
         int squareTop = 0;
         int listWidth = 0;
+        float maxWidth = 0;
+        float maxHeight = 0;
+
+        if(this.loadImages == true){
+            for(ImageInfo i : imageChooser.getImageList()){
+                if(i.getPaintingWidth() > maxWidth)
+                    maxWidth = i.getPaintingWidth();
+                if(i.getPaintingHeigth() > maxHeight)
+                    maxHeight = i.getPaintingHeigth();
+            }
+        }
 
         for(ImageInfo i : imageChooser.getImageList()){
             if(this.loadImages == true)
-                loadImages(i, squareWidth, squareHeight);
+                loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
             //seta imageInfo
-            setImageInfo(i, i.getImgList().getWidth(this), squareHeight, listWidth, squareTop);
-            listWidth += i.getImgList().getWidth(this) + 3;
+            if(this.listShowType == "modified") {
+                setImageInfo(i, i.getImgList().getWidth(this), i.getImgList().getHeight(this), listWidth, squareTop);
+                listWidth += i.getImgList().getWidth(this) + 3;
+            }
+            else {
+                setImageInfo(i, i.getImgListReal().getWidth(this), i.getImgListReal().getHeight(this), listWidth, squareTop);
+                listWidth += i.getImgListReal().getWidth(this) + 3;
+            }
         }
         this.loadImages = false;
         if(imageChooser.getImageList().size() > 0) {
@@ -175,7 +196,10 @@ public class ListPanel extends JPanel implements Observer{
 	
     public void drawImageList(Graphics g){
         for(ImageInfo i : imageChooser.getImageList()){
-            g.drawImage(i.getImgList(), i.getX(), i.getY(), this);
+            if(this.listShowType == "modified")
+                g.drawImage(i.getImgList(), i.getX(), i.getY(), this);
+            else
+                g.drawImage(i.getImgListReal(), i.getX(), i.getY(), this);
         }
     }
 
