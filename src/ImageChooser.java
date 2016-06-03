@@ -41,11 +41,12 @@ public class ImageChooser extends java.util.Observable{
                     float blue = s.nextFloat();
                     float rgb = s.nextFloat();
                     float hue = s.nextFloat();
+                    float sat = s.nextFloat();
                     float pw = s.nextFloat();
                     float ph = s.nextFloat();
                     float year = s.nextFloat();
                     s.skip("          ");
-                    ImageInfo imageTemp = new ImageInfo(red, green, blue, rgb, hue, pw, ph, year, s.nextLine());
+                    ImageInfo imageTemp = new ImageInfo(red, green, blue, rgb, hue, sat, pw, ph, year, s.nextLine());
                     imageList.add(imageTemp);
                 }
             } finally {

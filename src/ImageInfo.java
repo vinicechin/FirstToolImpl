@@ -14,6 +14,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private float   blueValue;
     private float   rgbValue;
     private float   hueValue;
+    private float   satValue;
 
     private Image 	imgList;
     private Image   imgListReal;
@@ -25,7 +26,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float pw, float ph, float year, String name){
+    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float pw, float ph, float year, String name){
         this.name = name;
         this.year = year;
         this.paintingWidth = pw;
@@ -35,6 +36,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.blueValue = blueValue;
         this.rgbValue = rgbValue;
         this.hueValue = hueValue;
+        this.satValue = satValue;
     }
 
     /**********************************************************************************************/
@@ -77,6 +79,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public float getHueValue() {
         return hueValue;
+    }
+
+    public float getSatValue() {
+        return satValue;
     }
 
     public float getTotalSize() {
@@ -146,6 +152,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public void setHueValue(float hueValue) {
         this.hueValue = hueValue;
+    }
+
+    public void setSatValue(float satValue) {
+        this.satValue = satValue;
     }
 
     public void setWidth(int width){

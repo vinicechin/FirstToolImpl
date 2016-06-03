@@ -83,6 +83,10 @@ public class ListPanel extends JPanel implements Observer{
         return colorOrderType;
     }
 
+    public String getListShowType() {
+        return listShowType;
+    }
+
     public void setOrderType(String orderType) {
         if(this.orderType != orderType){
             this.orderType = orderType;
@@ -112,6 +116,12 @@ public class ListPanel extends JPanel implements Observer{
             setImagesDisplay();
             this.repaint();
         }
+    }
+
+    public void setListShowType(String listShowType) {
+        this.listShowType = listShowType;
+        setImagesDisplay();
+        this.repaint();
     }
 
     /************************************************************************************/
@@ -169,8 +179,10 @@ public class ListPanel extends JPanel implements Observer{
         }
 
         for(ImageInfo i : imageChooser.getImageList()){
-            if(this.loadImages == true)
+            if(this.loadImages == true) {
                 loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
+                this.mainPanel.addHSV((double) i.getHueValue(), (double) i.getSatValue());
+            }
             //seta imageInfo
             if(this.listShowType == "modified") {
                 setImageInfo(i, i.getImgList().getWidth(this), i.getImgList().getHeight(this), listWidth, squareTop);
