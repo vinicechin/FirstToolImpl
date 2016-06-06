@@ -1,11 +1,24 @@
 //numero de imagens
 //red   green   blue    RGB     Hue(360) Sat(100)    largura     altura      ano_criação     nome
 8
+19.0      14.0      1887      439px-Vincent_Willem_van_Gogh_108.jpg
+40.8      32.9      1887      485px-Vincent_van_Gogh_-_Zelfportret_-_Google_Art_Project.jpg
 91.2    85.9    61.18   139.4   50.97    32.38       46.5        38.5        1886.0          Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg
+61.0      50.0      1887      Self-Portrait_with_Pipe_and_Glass28.jpg
 111.05  117.54  102.03  191.2   100.97   20.31       19.0        14.0        1887.0          Self-Portrait2.jpg
 86.98   64.37   66.64   127.1   218.33   40.025      41.0        33.5        1887.1          Self-Portrait6.jpg
 37.62   31.85   20.71   53.47   104.13   49.35       42.0        34.0        1887.2          Self-Portrait7.jpg
 103.2   86.91   63.92   149.3   47.37    34.02       39.5        29.5        1886.1          Van_Gogh_-_Selbstbildnis.jpeg
 71.96   68.0    66.36   119.2   158.3    13.8        27.0        19.0        1886.2          Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg
 80.13   72.84   47.61   118.3   56.04    40.025      41.5        32.5        1886.3          Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg
+*
+*
+42.0      33.7      1887      Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg
 45.77   33.74   30.95   64.74   115.63   38.325      46.0        38.0        1886.4          Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg
+
+
+
+
+
+
+
