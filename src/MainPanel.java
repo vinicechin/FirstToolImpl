@@ -63,10 +63,10 @@ public class MainPanel extends JPanel {
             g.drawString("Altura: " + String.valueOf(this.pictureHeight), (int)circleLeft+5, altura+50);
         }
 
-        g2d.drawImage(this.hsvImage, (int)circleLeft-15, (int)circleTop-15+2, (int)circleSize+30, (int)circleSize+30, this);
-//        g.setColor(new Color(0,0,150));
-//        Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
-//        g2d.draw(circle);
+        //g.setColor(new Color(0,0,150));
+        //Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
+        //g2d.fill(circle);
+        g2d.drawImage(this.hsvImage, (int)circleLeft, (int)circleTop, (int)circleSize, (int)circleSize, this);
 
         g.setColor(new Color(0, 0, 0));
         g.drawLine((int)(circleLeft - 10), (int)centerY, (int)(circleLeft + circleSize + 10), (int)centerY);
