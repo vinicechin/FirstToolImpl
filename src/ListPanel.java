@@ -23,6 +23,7 @@ public class ListPanel extends JPanel implements Observer{
     private MainPanel mainPanel;
     private SelectionController mouseControl;
     private boolean loadImages;
+    private boolean bFirst;
 
     /************************************************************************************/
     public ListPanel(MainPanel mainPanel) {
@@ -33,6 +34,7 @@ public class ListPanel extends JPanel implements Observer{
         this.listShowType = "modified";
         this.mainPanel = mainPanel;
         this.imageChooser.addObserver(this);
+        this.bFirst = true;
 
         //add the mouse controllers to the panel
         this.mouseControl = new SelectionController(this, mainPanel);
@@ -53,8 +55,7 @@ public class ListPanel extends JPanel implements Observer{
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     imageChooser.loadImages(chooser.getSelectedFile().getPath());
                     loadImages = true;
-                    setImagesDisplay();
-                    ListPanel.this.repaint();
+                    setOrderType(ListPanel.this.orderType);
                 }
                 if (returnVal == JFileChooser.CANCEL_OPTION){
                     JOptionPane.showMessageDialog(ListPanel.this, "Open command cancelled by user.");
@@ -88,7 +89,7 @@ public class ListPanel extends JPanel implements Observer{
     }
 
     public void setOrderType(String orderType) {
-        if(this.orderType != orderType){
+        if(this.orderType != orderType || this.loadImages){
             this.orderType = orderType;
             
             switch (this.orderType) {
@@ -157,8 +158,8 @@ public class ListPanel extends JPanel implements Observer{
         this.mainPanel.setImg(image.getImgOrig());
         this.mainPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
         this.mainPanel.setYear((int)image.getYear());
-        this.mainPanel.repaint();
         this.mainPanel.selectHSV((double) image.getHueValue(), (double) image.getSatValue());
+        this.mainPanel.repaint();
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
@@ -171,6 +172,8 @@ public class ListPanel extends JPanel implements Observer{
         float maxHeight = 0;
 
         if(this.loadImages == true){
+            this.mainPanel.getHueList().clear();
+            this.mainPanel.getSatList().clear();
             for(ImageInfo i : imageChooser.getImageList()){
                 if(i.getPaintingWidth() > maxWidth)
                     maxWidth = i.getPaintingWidth();

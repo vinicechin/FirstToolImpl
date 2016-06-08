@@ -21,7 +21,7 @@ public class ImageShowTool extends JFrame {
     public ImageShowTool(String name){
         super(name);
         initComponents();
-        this.setSize(800, 800);
+        this.setSize(1400, 820);
     }
 
     private void initComponents(){
@@ -48,7 +48,7 @@ public class ImageShowTool extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ImageInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        showListPanel.setPreferredSize(new Dimension(900,100));
+        showListPanel.setPreferredSize(new Dimension(1500,100));
         
         javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(ImageInfoPanel);
         ImageInfoPanel.setLayout(ImageInfoPanelLayout);
@@ -58,11 +58,11 @@ public class ImageShowTool extends JFrame {
         );
         ImageInfoPanelLayout.setVerticalGroup(
                 ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 585, Short.MAX_VALUE)
+                        .addGap(0, 595, Short.MAX_VALUE)
         );
 
         ImageListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
-        ImageListPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        ImageListPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         ImageListPanel.setBounds(0, 0, 1000, 150);
         
         //configure buttons group

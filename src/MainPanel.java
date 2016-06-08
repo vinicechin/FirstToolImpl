@@ -2,7 +2,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,39 +47,23 @@ public class MainPanel extends JPanel {
         this.selectedSat = sat;
     }
 
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
-        double circleLeft = ((6.5 * this.getWidth())/10);
-        double circleTop = ((5.5 * this.getHeight())/10);
-        double circleSize = ((3.3 * this.getWidth())/10);
-        double centerX = circleLeft + circleSize/2;
-        double centerY = circleTop + circleSize/2;
-        int squareLeft = (int) ((0.5 * this.getWidth())/ 10);
-        int altura = 20;
-
-        if(this.img != null) {
-            g.drawImage(this.img, squareLeft, 20, this);
-            g.setColor(Color.red);
-            g.fillRect((int)circleLeft,altura,85,60);
-            g.setColor(Color.black);
-            g.drawString("Ano: " + String.valueOf(this.year), (int)circleLeft+5, altura+20);
-            g.drawString("Largura: " + String.valueOf(this.pictureWidth), (int)circleLeft+5, altura+35);
-            g.drawString("Altura: " + String.valueOf(this.pictureHeight), (int)circleLeft+5, altura+50);
-        }
-
-        //g.setColor(new Color(0,0,150));
-        //Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
-        //g2d.fill(circle);
-        g2d.drawImage(this.hsvImage, (int)circleLeft, (int)circleTop, (int)circleSize, (int)circleSize, this);
+    public void paintFixed(Graphics2D g, double circleLeft, double circleTop, double circleSize, double centerX, double centerY){        
+        int sizeDifImage = 48;
+        int deslocDifImage = sizeDifImage/2;
+        int deslocYImage = 5;
+        g.drawImage(this.hsvImage, (int)circleLeft - deslocDifImage, (int)circleTop - deslocDifImage + deslocYImage, (int)circleSize + sizeDifImage, (int)circleSize + sizeDifImage, this);
+//        g.setColor(new Color(0,0,150));
+//        Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
+//        g.draw(circle);
 
         g.setColor(new Color(0, 0, 0));
         g.drawLine((int)(circleLeft - 10), (int)centerY, (int)(circleLeft + circleSize + 10), (int)centerY);
         g.drawLine((int)centerX, (int)(circleTop - 10), (int)centerX, (int)(circleTop + circleSize + 10));
-
+    }
+    
+    public void paintPoints(Graphics2D g, double circleLeft, double circleTop, double circleSize, double centerX, double centerY){
         g.setColor(new Color(10, 10, 150));
-        //desenha um ponto no circulo  (x0 + r cos theta, y0 + r sin theta)
+        //desenha um ponto no circulo  (x0 + r cos theta, y0 - r sin theta) onde theta é angulo em rad
         for(int i=0; i<hueList.size(); i++) {
             double pointSize = 5;
             double  hue = hueList.get(i);
@@ -90,9 +73,40 @@ public class MainPanel extends JPanel {
             if(hue == this.selectedHue && sat == this.selectedSat){
                 g.setColor(new Color(150, 10, 10));
             }
-            g2d.fill(p1);
+            g.fill(p1);
             g.setColor(new Color(10, 10, 150));
         }
+    }
+    
+    @Override
+    public void paintComponent(Graphics g){
+        //inicializations
+        double circleLeft = this.getWidth() - ((2.2 * this.getWidth())/10);
+        double circleTop = this.getHeight() - ((5.0 * this.getHeight())/10);
+        double circleSize = ((2.0 * this.getWidth())/10);
+        double centerX = circleLeft + circleSize/2;
+        double centerY = circleTop + circleSize/2;
+        int squareLeft = (int) ((3 * this.getWidth())/ 10);
+        int y = 20, x = 20;
+        
+        //seta para desenhar novamente
+        Graphics2D g2d = (Graphics2D)g;
+        super.paintComponent(g2d);
+        
+        //draw circle HSV
+        paintFixed(g2d, circleLeft, circleTop, circleSize, centerX, centerY);
+        //draw image if it exists
+        if(this.img != null) {
+            g.drawImage(this.img, squareLeft, 20, this);
+            g.setColor(Color.red);
+            g.fillRect(x,y,85,60);
+            g.setColor(Color.black);
+            g.drawString("Ano: " + String.valueOf(this.year), (int)x+5, y+20);
+            g.drawString("Largura: " + String.valueOf(this.pictureWidth), (int)x+5, y+35);
+            g.drawString("Altura: " + String.valueOf(this.pictureHeight), (int)x+5, y+50);
+        }
+        //draw the points HSV
+        paintPoints(g2d, circleLeft, circleTop, circleSize, centerX, centerY);
     }
 
     public List<Double> getHueList() {
@@ -104,8 +118,8 @@ public class MainPanel extends JPanel {
     }
 
     public void setImg(Image img){
-        int squareWidth = (7 * this.getWidth()) / 10;
-        int squareHeight = squareWidth;
+        int squareHeight = (int)(9.5 * this.getHeight()) / 10;
+        int squareWidth = (int)(7 * this.getWidth()) / 10;
         
         if(img != null){
             if(img.getWidth(this) > img.getHeight(this))
