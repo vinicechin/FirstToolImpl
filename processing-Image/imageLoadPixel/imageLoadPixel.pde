@@ -1,11 +1,25 @@
 PImage img;
-String nomes[] = {"Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg",
+String nomes[] = {"439px-Self-Portrait9_Van_Gogh.jpg",
+                  "439px-Vincent_Willem_van_Gogh_108.jpg",
+                  "450px-Van_Gogh_-_Selbstbildnis_mit_Strohhut_und_Pfeife.jpeg",
+                  "454px-Van_Gogh_-_Selbsbildnis13.jpeg",
+                  "456px-Van_Gogh_-_Selbstbildnis_mit_Strohhut1.jpeg",
+                  "457px-Van_Gogh_Self-Portrait_Autumn_1887.jpg",
+                  "463px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Detroit.jpg",
+                  "474px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Metropolitan.jpg",
+                  "485px-Vincent_van_Gogh_-_Zelfportret_-_Google_Art_Project.jpg",
+                  "Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg",
+                  "Self-Portrait_with_Pipe_and_Glass28.jpg",
                   "Self-Portrait2.jpg",
                   "Self-Portrait6.jpg",
                   "Self-Portrait7.jpg",
                   "Van_Gogh_-_Selbstbildnis.jpeg",
                   "Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg",
                   "Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg",
+                  "Van_Gogh_Self-Portrait_with_Grey_Felt_Hat_1886-87_Rijksmuseum.jpg",
+                  "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project.jpg",
+                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg",
+                  "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project_(nAHHHe2ggxUGyg).jpg",
                   "Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg"};
 
 void setup() {
@@ -48,8 +62,9 @@ void calculate(int pos){
   
   float total = sqrt(pow(rTotal,2) + pow(gTotal,2) + pow(bTotal,2));
   println("\n" + nomes[pos]);
-  println("Media RGB: " + rTotal + " " + gTotal + " " + bTotal + " = " + total);
-  println("Hue: " + hTotal + " Saturation: " + sTotal);
+  //println("Media RGB: " + rTotal + " " + gTotal + " " + bTotal + " = " + total);
+  //println("Hue: " + hTotal + " Saturation: " + sTotal);
+  println(rTotal + " " + gTotal + " " + bTotal + " " + total + " " + hTotal + " " + sTotal);
 }
 
 void draw() {

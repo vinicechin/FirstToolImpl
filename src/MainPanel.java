@@ -21,6 +21,8 @@ public class MainPanel extends JPanel {
     private Image hsvImage;
     List<Double> hueList;
     List<Double> satList;
+    private double selectedHue;
+    private double selectedSat;
 
     public MainPanel(){
         super();
@@ -41,13 +43,18 @@ public class MainPanel extends JPanel {
         this.satList.add(sat);
     }
 
+    public void selectHSV(double hue, double sat){
+        this.selectedHue = hue;
+        this.selectedSat = sat;
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
-        double circleLeft = ((7.3 * this.getWidth())/10);
-        double circleTop = ((6.3 * this.getHeight())/10);
-        double circleSize = ((2.5 * this.getWidth())/10);
+        double circleLeft = ((6.5 * this.getWidth())/10);
+        double circleTop = ((5.5 * this.getHeight())/10);
+        double circleSize = ((3.3 * this.getWidth())/10);
         double centerX = circleLeft + circleSize/2;
         double centerY = circleTop + circleSize/2;
         int squareLeft = (int) ((0.5 * this.getWidth())/ 10);
@@ -72,13 +79,19 @@ public class MainPanel extends JPanel {
         g.drawLine((int)(circleLeft - 10), (int)centerY, (int)(circleLeft + circleSize + 10), (int)centerY);
         g.drawLine((int)centerX, (int)(circleTop - 10), (int)centerX, (int)(circleTop + circleSize + 10));
 
-        g.setColor(new Color(10, 14, 66));
+        g.setColor(new Color(10, 10, 150));
         //desenha um ponto no circulo  (x0 + r cos theta, y0 + r sin theta)
         for(int i=0; i<hueList.size(); i++) {
             double pointSize = 5;
-            double radius = circleSize / 2 * (satList.get(i) / 100);
-            Ellipse2D.Double p1 = new Ellipse2D.Double((centerX + (radius * Math.cos(hueList.get(i)))) - pointSize / 2, (centerY + (radius * Math.sin(hueList.get(i)))) - pointSize / 2, pointSize, pointSize);
+            double  hue = hueList.get(i);
+            double  sat = satList.get(i);
+            double radius = circleSize / 2 * (sat / 100);
+            Ellipse2D.Double p1 = new Ellipse2D.Double((centerX + (radius * Math.cos(hue/180 * Math.PI))) - pointSize / 2, (centerY - (radius * Math.sin(hue/180 * Math.PI))) - pointSize / 2, pointSize, pointSize);
+            if(hue == this.selectedHue && sat == this.selectedSat){
+                g.setColor(new Color(150, 10, 10));
+            }
             g2d.fill(p1);
+            g.setColor(new Color(10, 10, 150));
         }
     }
 

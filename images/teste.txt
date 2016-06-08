@@ -1,0 +1,10 @@
+//numero de imagens
+//red   green   blue    RGB      Hue(360) Sat(100)    altura     largura      ano_criação     nome
+1
+91.945  77.95   51.76   131.185  30.0      100.0         41.0       33.0         1887.00          439px-Self-Portrait9_Van_Gogh.jpg
+
+
+
+
+
+

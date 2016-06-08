@@ -1,28 +1,28 @@
 //numero de imagens
-//red   green   blue    RGB     Hue(360) Sat(100)    altura     largura      ano_criação     nome
+//red   green   blue    RGB      Hue(360) Sat(100)    altura     largura      ano_criação     nome
 22
-41.0      33.0      1887      439px-Self-Portrait9_Van_Gogh.jpg
-19.0      14.0      1887      439px-Vincent_Willem_van_Gogh_108.jpg
-41.5      31.5      1887      450px-Van_Gogh_-_Selbstbildnis_mit_Strohhut_und_Pfeife.jpeg
-42.5      31.5      1887      454px-Van_Gogh_-_Selbsbildnis13.jpeg
-41.0      31.0      1887      456px-Van_Gogh_-_Selbstbildnis_mit_Strohhut1.jpeg
-47.0      35.0      1887      457px-Van_Gogh_Self-Portrait_Autumn_1887.jpg
-34.9      26.7      1887      463px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Detroit.jpg
-40.6      31.8      1888      474px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Metropolitan.jpg
-40.8      32.9      1887      485px-Vincent_van_Gogh_-_Zelfportret_-_Google_Art_Project.jpg
-91.2    85.9    61.18   139.4   50.97    32.38       46.5        38.5        1886.0          Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg
-61.0      50.0      1887      Self-Portrait_with_Pipe_and_Glass28.jpg
-111.05  117.54  102.03  191.2   100.97   20.31       19.0        14.0        1887.0          Self-Portrait2.jpg
-86.98   64.37   66.64   127.1   218.33   40.025      41.0        33.5        1887.1          Self-Portrait6.jpg
-37.62   31.85   20.71   53.47   104.13   49.35       42.0        34.0        1887.2          Self-Portrait7.jpg
-103.2   86.91   63.92   149.3   47.37    34.02       39.5        29.5        1886.1          Van_Gogh_-_Selbstbildnis.jpeg
-71.96   68.0    66.36   119.2   158.3    13.8        27.0        19.0        1886.2          Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg
-80.13   72.84   47.61   118.3   56.04    40.025      41.5        32.5        1886.3          Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg
-41.0      32.0      1887      Van_Gogh_Self-Portrait_with_Grey_Felt_Hat_1886-87_Rijksmuseum.jpg
-32.0      23.0      1887      Vincent van Gogh - Self-portrait - Google Art Project.jpg
-42.0      33.7      1887      Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg
-41.0      33.0      1887      Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project_(nAHHHe2ggxUGyg).jpg
-45.77   33.74   30.95   64.74   115.63   38.325      46.0        38.0        1886.4          Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg
+91.945  77.95   51.76   131.185  86.37    42.25       41.0       33.0         1887.00          439px-Self-Portrait9_Van_Gogh.jpg
+105.37  89.0    93.05   166.38   211.02   21.475      19.0       14.0         1887.01          439px-Vincent_Willem_van_Gogh_108.jpg
+97.945  89.59   80.92   155.46   96.0     20.95       41.5       31.5         1887.02          450px-Van_Gogh_-_Selbstbildnis_mit_Strohhut_und_Pfeife.jpeg
+109.64  101.52  84.8    171.81   68.17    22.43       42.5       31.5         1887.03          454px-Van_Gogh_-_Selbsbildnis13.jpeg
+131.42  122.94  94.95   203.48   107.21   31.41       41.0       31.0         1887.04          456px-Van_Gogh_-_Selbstbildnis_mit_Strohhut1.jpeg
+109.67  104.96  90.49   176.73   126.13   29.34       47.0       35.0         1887.05          457px-Van_Gogh_Self-Portrait_Autumn_1887.jpg
+158.4   139.86  107.47  237.065  89.06    47.71       34.9       26.7         1887.06          463px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Detroit.jpg
+166.23  145.31  105.66  244.77   49.97    35.81       40.6       31.8         1888.00          474px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Metropolitan.jpg
+192.29  170.73  135.23  290.53   42.565   30.79       40.8       32.9         1887.07          485px-Vincent_van_Gogh_-_Zelfportret_-_Google_Art_Project.jpg
+91.2    85.9    61.18   139.4    50.97    32.38       46.5       38.5         1886.00          Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg
+102.02  88.42   71.21   152.63   75.99    27.79       61.0       50.0         1887.08          Self-Portrait_with_Pipe_and_Glass28.jpg
+111.05  117.54  102.03  191.2    100.97   20.31       19.0       14.0         1887.09          Self-Portrait2.jpg
+86.98   64.37   66.64   127.1    218.33   40.025      41.0       33.5         1887.10          Self-Portrait6.jpg
+37.62   31.85   20.71   53.47    104.13   49.35       42.0       34.0         1887.11          Self-Portrait7.jpg
+103.2   86.91   63.92   149.3    47.37    34.02       39.5       29.5         1886.01          Van_Gogh_-_Selbstbildnis.jpeg
+71.96   68.0    66.36   119.2    158.3    13.8        27.0       19.0         1886.02          Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg
+80.13   72.84   47.61   118.3    56.04    40.025      41.5       32.5         1886.03          Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg
+100.77  101.56  62.49   156.12   74.34    42.61       41.0       32.0         1887.12          Van_Gogh_Self-Portrait_with_Grey_Felt_Hat_1886-87_Rijksmuseum.jpg
+138.41  129.84  110.16  219.44   78.345   30.08       32.0       23.0         1887.13          Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project.jpg
+72.34   73.92   62.06   120.62   121.275  50.9        42.0       33.7         1887.14          Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg
+132.99  117.76  97.94   202.84   57.55    30.61       41.0       33.0         1887.15          Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project_(nAHHHe2ggxUGyg).jpg
+45.77   33.74   30.95   64.74    115.63   38.325      46.0       38.0         1886.04          Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg
 
 
 

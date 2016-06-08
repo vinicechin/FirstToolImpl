@@ -158,6 +158,7 @@ public class ListPanel extends JPanel implements Observer{
         this.mainPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
         this.mainPanel.setYear((int)image.getYear());
         this.mainPanel.repaint();
+        this.mainPanel.selectHSV((double) image.getHueValue(), (double) image.getSatValue());
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
