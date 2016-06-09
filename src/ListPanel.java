@@ -172,8 +172,6 @@ public class ListPanel extends JPanel implements Observer{
         float maxHeight = 0;
 
         if(this.loadImages == true){
-            this.mainPanel.getHueList().clear();
-            this.mainPanel.getSatList().clear();
             for(ImageInfo i : imageChooser.getImageList()){
                 if(i.getPaintingWidth() > maxWidth)
                     maxWidth = i.getPaintingWidth();
@@ -182,10 +180,11 @@ public class ListPanel extends JPanel implements Observer{
             }
         }
 
+        this.mainPanel.getHueList().clear();
+        this.mainPanel.getSatList().clear();
         for(ImageInfo i : imageChooser.getImageList()){
             if(this.loadImages == true) {
                 loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
-                this.mainPanel.addHSV((double) i.getHueValue(), (double) i.getSatValue());
             }
             //seta imageInfo
             if(this.listShowType == "modified") {
@@ -196,6 +195,7 @@ public class ListPanel extends JPanel implements Observer{
                 setImageInfo(i, i.getImgListReal().getWidth(this), i.getImgListReal().getHeight(this), listWidth, squareTop);
                 listWidth += i.getImgListReal().getWidth(this) + 3;
             }
+            this.mainPanel.addHSV((double) i.getHueValue(), (double) i.getSatValue());
         }
         this.loadImages = false;
         if(imageChooser.getImageList().size() > 0) {

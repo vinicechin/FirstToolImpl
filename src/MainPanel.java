@@ -2,6 +2,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,18 +64,39 @@ public class MainPanel extends JPanel {
     }
     
     public void paintPoints(Graphics2D g, double circleLeft, double circleTop, double circleSize, double centerX, double centerY){
+        double pointSize, hue, sat, radius, pX, pY;
+        Ellipse2D.Double pdraw = null;
+        Point2D.Double pAnt = null, pTo;
+        Line2D.Double line;
+
         g.setColor(new Color(10, 10, 150));
         //desenha um ponto no circulo  (x0 + r cos theta, y0 - r sin theta) onde theta é angulo em rad
         for(int i=0; i<hueList.size(); i++) {
-            double pointSize = 5;
-            double  hue = hueList.get(i);
-            double  sat = satList.get(i);
-            double radius = circleSize / 2 * (sat / 100);
-            Ellipse2D.Double p1 = new Ellipse2D.Double((centerX + (radius * Math.cos(hue/180 * Math.PI))) - pointSize / 2, (centerY - (radius * Math.sin(hue/180 * Math.PI))) - pointSize / 2, pointSize, pointSize);
-            if(hue == this.selectedHue && sat == this.selectedSat){
+            pointSize = 5;
+            //pega valores para contruir posição do ponto
+            hue = hueList.get(i);
+            sat = satList.get(i);
+            //controi ponto
+            radius = circleSize / 2 * (sat / 100);
+            pX = (centerX + (radius * Math.cos(hue/180 * Math.PI)));
+            pY = (centerY - (radius * Math.sin(hue/180 * Math.PI)));
+
+            //cria variaveis para desenhar e desenha
+            if(pAnt != null){
+                pTo = pAnt;
+                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
+                pAnt = new Point2D.Double(pX, pY);
+                line = new Line2D.Double(pAnt,pTo);
+                g.draw(line);
+            } else {
+                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
+                pAnt = new Point2D.Double(pX, pY);
+            }
+
+            if(hue == this.selectedHue && sat == this.selectedSat) {
                 g.setColor(new Color(150, 10, 10));
             }
-            g.fill(p1);
+            g.fill(pdraw);
             g.setColor(new Color(10, 10, 150));
         }
     }
