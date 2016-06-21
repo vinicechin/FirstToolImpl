@@ -199,7 +199,11 @@ public class ListPanel extends JPanel implements Observer{
         }
         this.loadImages = false;
         if(imageChooser.getImageList().size() > 0) {
-            this.setPreferredSize(new Dimension(listWidth+200,100));
+            if(listWidth > 1270){
+                this.setPreferredSize(new Dimension(listWidth+200,100));
+            } else {
+                this.setPreferredSize(new Dimension(1270,100));
+            }
             updateImageMain(imageChooser.getImageList().get(0));
         }
     }

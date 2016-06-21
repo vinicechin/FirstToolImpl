@@ -20,7 +20,22 @@ String nomes[] = {"439px-Self-Portrait9_Van_Gogh.jpg",
                   "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project.jpg",
                   "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg",
                   "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project_(nAHHHe2ggxUGyg).jpg",
-                  "Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg"};
+                  "Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg",
+                  "Vincent_van_Gogh,_Portrait_of_Theo_van_Gogh_(1887).jpg",
+                  "Self-Portrait_with_a_Japanese_Print18.jpg",
+                  "Vincent_van_Gogh_-_Self-portrait_with_grey_felt_hat_-_Google_Art_Project.jpg",
+                  "Van_Gogh_-_Selbstbildnis27.jpeg",
+                  "Van_Gogh_-_Selbstbildnis_29.jpeg",
+                  "Van_Gogh_self_portrait_as_an_artist.jpg",
+                  "Vincent_Willem_van_Gogh_110.jpg",
+                  "VanGogh-self-portrait-dedicated_to_gaugin.jpg",
+                  "Van_Gogh_-_Selbstbildnis34.jpeg",
+                  "Vincent_Willem_van_Gogh_106.jpg",
+                  "VanGogh-self-portrait-with_bandaged_ear.jpg",
+                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(719161).jpg",
+                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_2.jpg",
+                  "Vincent_Willem_van_Gogh_102.jpg",
+                  "Vincent_Willem_van_Gogh_103.jpg"};
 
 void setup() {
   size(400, 500);
@@ -32,7 +47,7 @@ void setup() {
 
 void calculate(int pos){
   img.loadPixels();
-  float rTotal = 0, gTotal = 0, bTotal = 0, hTotal = 0, sTotal = 0;
+  float rTotal = 0, gTotal = 0, bTotal = 0, hTotal = 0, sTotal = 0, lTotal = 0;
   
   for (int y = 0; y < img.height; y++) {
     for (int x = 0; x < img.width; x++) {
@@ -48,8 +63,10 @@ void calculate(int pos){
       colorMode(HSB,360,100,100);
       float h = hue(img.pixels[imageLoc]);
       float s = saturation(img.pixels[imageLoc]);
+      float l = brightness(img.pixels[imageLoc]);
       hTotal += h;
       sTotal += s;
+      lTotal += l;
     }
   }
   
@@ -59,12 +76,14 @@ void calculate(int pos){
   bTotal = bTotal/nPixels;
   hTotal = hTotal/nPixels;
   sTotal = sTotal/nPixels;
+  lTotal = lTotal/nPixels;
   
   float total = sqrt(pow(rTotal,2) + pow(gTotal,2) + pow(bTotal,2));
   println("\n" + nomes[pos]);
   //println("Media RGB: " + rTotal + " " + gTotal + " " + bTotal + " = " + total);
   //println("Hue: " + hTotal + " Saturation: " + sTotal);
-  println(rTotal + " " + gTotal + " " + bTotal + " " + total + " " + hTotal + " " + sTotal);
+  //println(rTotal + " " + gTotal + " " + bTotal + " " + total + " " + hTotal + " " + sTotal);
+  println(lTotal);
 }
 
 void draw() {

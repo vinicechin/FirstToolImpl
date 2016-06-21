@@ -7,10 +7,11 @@ import java.awt.*;
 public class ImageShowTool extends JFrame {
     private MainPanel         ImageInfoPanel;
     private JScrollPane       ImageListPanel;
+    private JPanel            graphPanel;
+    private JPanel            dataPanel;
     private JMenu             fileMenu;
     private JMenuBar          menuBar;
     private ButtonGroup       buttonGroup1;
-    private ButtonGroup       buttonGroup2;
     private JRadioButton      byColor;
     private JRadioButton      byYear;
     private JRadioButton      bySize;
@@ -26,10 +27,11 @@ public class ImageShowTool extends JFrame {
 
     private void initComponents(){
         buttonGroup1        = new javax.swing.ButtonGroup();
-        buttonGroup2        = new javax.swing.ButtonGroup();
         ImageInfoPanel      = new MainPanel();
         showListPanel       = new ListPanel(ImageInfoPanel);
         ImageListPanel      = new JScrollPane(showListPanel);
+        graphPanel          = new JPanel();
+        dataPanel           = new JPanel();
         byColor             = new javax.swing.JRadioButton();
         byYear              = new javax.swing.JRadioButton();
         bySize              = new javax.swing.JRadioButton();
@@ -48,19 +50,47 @@ public class ImageShowTool extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ImageInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        showListPanel.setPreferredSize(new Dimension(1500,100));
-        
+        showListPanel.setPreferredSize(new Dimension(1270,100));
+
+        //main panel layout
         javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(ImageInfoPanel);
         ImageInfoPanel.setLayout(ImageInfoPanelLayout);
-        ImageInfoPanelLayout.setHorizontalGroup(
-                ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 619, Short.MAX_VALUE)
-        );
         ImageInfoPanelLayout.setVerticalGroup(
                 ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 595, Short.MAX_VALUE)
+                        .addGap(0, 575, Short.MAX_VALUE)
+        );
+        ImageInfoPanelLayout.setHorizontalGroup(
+                ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 750, Short.MAX_VALUE)
         );
 
+        //graph panel layout
+        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
+        graphPanel.setLayout(graphPanelLayout);
+        graphPanelLayout.setVerticalGroup(
+                graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 575, Short.MAX_VALUE)
+        );
+        graphPanelLayout.setHorizontalGroup(
+                graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        dataPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        //data panel layout
+        javax.swing.GroupLayout dataPanelLayout = new javax.swing.GroupLayout(dataPanel);
+        dataPanel.setLayout(dataPanelLayout);
+        dataPanelLayout.setHorizontalGroup(
+                dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(200, 250, Short.MAX_VALUE)
+        );
+        dataPanelLayout.setVerticalGroup(
+                dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 575, Short.MAX_VALUE)
+        );
+
+        //list layout
         ImageListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
         ImageListPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         ImageListPanel.setBounds(0, 0, 1000, 150);
@@ -87,6 +117,7 @@ public class ImageShowTool extends JFrame {
         realSizeList.setText("Real Size");
         realSizeList.addActionListener(evt -> realSizeListActionPerformed(evt));
 
+        //frame layout
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,7 +133,10 @@ public class ImageShowTool extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ImageListPanel)
                                 .addContainerGap())
-                        .addComponent(ImageInfoPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(dataPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ImageInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +144,7 @@ public class ImageShowTool extends JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(ImageListPanel)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(24, 24, 24)
+                                                .addGap(5, 5, 5)
                                                 .addComponent(realSizeList)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(byColor)
@@ -122,7 +156,10 @@ public class ImageShowTool extends JFrame {
                                                 .addComponent(colorOrderSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ImageInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(ImageInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();

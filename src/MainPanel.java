@@ -65,9 +65,9 @@ public class MainPanel extends JPanel {
     
     public void paintPoints(Graphics2D g, double circleLeft, double circleTop, double circleSize, double centerX, double centerY){
         double pointSize, hue, sat, radius, pX, pY;
-        Ellipse2D.Double pdraw = null;
-        Point2D.Double pAnt = null, pTo;
-        Line2D.Double line;
+        Ellipse2D.Double pdraw;
+        //Point2D.Double pAnt = null, pTo;
+        //Line2D.Double line;
 
         g.setColor(new Color(10, 10, 150));
         //desenha um ponto no circulo  (x0 + r cos theta, y0 - r sin theta) onde theta é angulo em rad
@@ -82,19 +82,20 @@ public class MainPanel extends JPanel {
             pY = (centerY - (radius * Math.sin(hue/180 * Math.PI)));
 
             //cria variaveis para desenhar e desenha
-            if(pAnt != null){
+            /*if(pAnt != null){
                 pTo = pAnt;
-                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
                 pAnt = new Point2D.Double(pX, pY);
                 line = new Line2D.Double(pAnt,pTo);
                 g.draw(line);
             } else {
-                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
                 pAnt = new Point2D.Double(pX, pY);
-            }
+            }*/
 
             if(hue == this.selectedHue && sat == this.selectedSat) {
+                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize+2, pointSize+2);
                 g.setColor(new Color(150, 10, 10));
+            } else {
+                pdraw = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
             }
             g.fill(pdraw);
             g.setColor(new Color(10, 10, 150));
@@ -118,6 +119,7 @@ public class MainPanel extends JPanel {
         
         //draw circle HSV
         paintFixed(g2d, circleLeft, circleTop, circleSize, centerX, centerY);
+
         //draw image if it exists
         if(this.img != null) {
             g.drawImage(this.img, squareLeft, 20, this);
@@ -128,6 +130,7 @@ public class MainPanel extends JPanel {
             g.drawString("Largura: " + String.valueOf(this.pictureWidth), (int)x+5, y+35);
             g.drawString("Altura: " + String.valueOf(this.pictureHeight), (int)x+5, y+50);
         }
+
         //draw the points HSV
         paintPoints(g2d, circleLeft, circleTop, circleSize, centerX, centerY);
     }

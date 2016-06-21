@@ -6,6 +6,7 @@ import java.awt.*;
 public class ImageInfo implements Comparable<ImageInfo>{
     private String 	name;
     private float 	year;
+    private int     month;
     private float	paintingWidth;
     private float	paintingHeigth;
 
@@ -15,6 +16,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private float   rgbValue;
     private float   hueValue;
     private float   satValue;
+    private float   lumValue;
 
     private Image 	imgList;
     private Image   imgListReal;
@@ -26,9 +28,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float pw, float ph, float year, String name){
+    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, float year, int month, String name){
         this.name = name;
         this.year = year;
+        this.month = month;
         this.paintingWidth = pw;
         this.paintingHeigth = ph;
         this.redValue = redValue;
@@ -37,6 +40,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.rgbValue = rgbValue;
         this.hueValue = hueValue;
         this.satValue = satValue;
+        this.lumValue = lumValue;
     }
 
     /**********************************************************************************************/
@@ -61,6 +65,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return this.year;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
     public float getRedValue() {
         return redValue;
     }
@@ -83,6 +91,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public float getSatValue() {
         return satValue;
+    }
+
+    public float getLumValue() {
+        return lumValue;
     }
 
     public float getTotalSize() {
@@ -134,6 +146,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.year = year;
     }
 
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
     public void setRedValue(float redValue) {
         this.redValue = redValue;
     }
@@ -156,6 +172,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public void setSatValue(float satValue) {
         this.satValue = satValue;
+    }
+
+    public void setLumValue(float lumValue) {
+        this.lumValue = lumValue;
     }
 
     public void setWidth(int width){
