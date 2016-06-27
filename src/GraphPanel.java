@@ -182,16 +182,16 @@ public class GraphPanel extends JPanel {
         double maxYear = 0, maxHeight = 0, maxWidth = 0, maxTS = 0;
         double minYear = 2016;
         for(int i=0; i<this.imgList.size(); i++) {
-            if(maxYear < this.imgList.get(i).getYear())
-                maxYear = this.imgList.get(i).getYear();
+            if(maxYear < Math.round(this.imgList.get(i).getYear()))
+                maxYear = Math.round(this.imgList.get(i).getYear());
             if(maxHeight < this.imgList.get(i).getPaintingHeigth())
                 maxHeight = this.imgList.get(i).getPaintingHeigth();
             if(maxWidth < this.imgList.get(i).getPaintingWidth())
                 maxWidth = this.imgList.get(i).getPaintingWidth();
             if(maxTS < this.imgList.get(i).getTotalSize())
                 maxTS = this.imgList.get(i).getTotalSize();
-            if(minYear > this.imgList.get(i).getYear())
-                minYear = this.imgList.get(i).getYear();
+            if(minYear > Math.round(this.imgList.get(i).getYear()))
+                minYear = Math.round(this.imgList.get(i).getYear());
         }
 
         //points
@@ -210,7 +210,7 @@ public class GraphPanel extends JPanel {
                 case "Brightness":  maxX = 100; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getLumValue()   / maxX)); this.originLabel.setText("0"); this.xLabel.setText("100"); break;
                 case "Month":       maxX = 12;  pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getMonth()      / maxX)); this.originLabel.setText("0"); this.xLabel.setText("12"); break;
 
-                case "Year":        pX = graph2dLeft + (graph2DSizeX * ((this.imgList.get(i).getYear() - minYear) / (maxYear - minYear))); this.originLabel.setText(String.valueOf(Math.round(minYear))); this.xLabel.setText(String.valueOf(Math.round(maxYear))); break;
+                case "Year":        pX = graph2dLeft + (graph2DSizeX * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.originLabel.setText(String.valueOf(Math.round(minYear))); this.xLabel.setText(String.valueOf(Math.round(maxYear))); break;
                 case "Height":      pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingHeigth()   / (maxHeight + 5)))    ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxHeight)); break;
                 case "Width":       pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingWidth()    / (maxWidth + 5)))     ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxWidth)); break;
                 case "Total Size":  pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getTotalSize()        / (maxTS + 5)))        ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxTS)); break;
@@ -226,7 +226,7 @@ public class GraphPanel extends JPanel {
                 case "Brightness":  maxY = 100; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getLumValue()   / maxY)); this.yLabel.setText("100"); break;
                 case "Month":       maxY = 12;  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getMonth()      / maxY)); this.yLabel.setText("12"); break;
 
-                case "Year":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ((this.imgList.get(i).getYear() - minYear) / (maxYear - minYear))); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
+                case "Year":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
                 case "Height":      pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingHeigth() / (maxHeight+5)))        ; this.yLabel.setText(String.valueOf(maxHeight)); break;
                 case "Width":       pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5)))       ; this.yLabel.setText(String.valueOf(maxWidth)); break;
                 case "Total Size":  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getTotalSize()      / (maxTS + 5)))          ; this.yLabel.setText(String.valueOf(maxTS)); break;
