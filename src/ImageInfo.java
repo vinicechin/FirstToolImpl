@@ -211,8 +211,12 @@ public class ImageInfo implements Comparable<ImageInfo>{
                 return (int) ((this.blueValue - o.getBlueValue())*100);
             case "RGB":
                 return (int) ((this.rgbValue - o.getRgbValue())*100);
-            case "HSL":
+            case "Hue":
                 return (int) ((this.hueValue - o.getHueValue())*100);
+            case "Saturation":
+                return (int) ((this.satValue - o.getSatValue())*100);
+            case "Brightness":
+                return (int) ((this.lumValue - o.getLumValue())*100);
             default:
                 return (int) ((this.hueValue - o.getHueValue())*100);
         }

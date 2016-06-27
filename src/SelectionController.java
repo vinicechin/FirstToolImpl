@@ -5,13 +5,11 @@ import java.awt.event.*;
  */
 public class SelectionController extends MouseAdapter implements WindowListener{
     private ListPanel listPanel;
-    private MainPanel mainPanel;
 
     //constructor
-    public SelectionController(ListPanel listPanel, MainPanel mainPanel){
+    public SelectionController(ListPanel listPanel){
         super();
         this.listPanel = listPanel;
-        this.mainPanel = mainPanel;
     }
 
     //setters
@@ -19,17 +17,9 @@ public class SelectionController extends MouseAdapter implements WindowListener{
         this.listPanel = panel;
     }
 
-    public void setMainPanel(MainPanel mainPanel) {
-        this.mainPanel = mainPanel;
-    }
-
     //getters
     public ListPanel getListPanel() {
         return this.listPanel;
-    }
-
-    public MainPanel getMainPanel() {
-        return mainPanel;
     }
 
     @Override

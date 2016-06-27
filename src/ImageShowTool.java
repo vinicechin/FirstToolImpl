@@ -7,8 +7,8 @@ import java.awt.*;
 public class ImageShowTool extends JFrame {
     private MainPanel         ImageInfoPanel;
     private JScrollPane       ImageListPanel;
-    private JPanel            graphPanel;
-    private JPanel            dataPanel;
+    private GraphPanel        graphPanel;
+    private DataPanel         dataPanel;
     private JMenu             fileMenu;
     private JMenuBar          menuBar;
     private ButtonGroup       buttonGroup1;
@@ -28,10 +28,10 @@ public class ImageShowTool extends JFrame {
     private void initComponents(){
         buttonGroup1        = new javax.swing.ButtonGroup();
         ImageInfoPanel      = new MainPanel();
-        showListPanel       = new ListPanel(ImageInfoPanel);
+        graphPanel          = new GraphPanel();
+        dataPanel           = new DataPanel();
+        showListPanel       = new ListPanel(ImageInfoPanel, graphPanel, dataPanel);
         ImageListPanel      = new JScrollPane(showListPanel);
-        graphPanel          = new JPanel();
-        dataPanel           = new JPanel();
         byColor             = new javax.swing.JRadioButton();
         byYear              = new javax.swing.JRadioButton();
         bySize              = new javax.swing.JRadioButton();
@@ -109,8 +109,8 @@ public class ImageShowTool extends JFrame {
         bySize.setText("Size");
         bySize.addActionListener(evt -> jRadioButtonActionPerformed(evt, "size"));
 
-        colorOrderSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "RGB", "HSL" }));
-        colorOrderSelector.setSelectedIndex(4);
+        colorOrderSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "RGB", "Hue", "Saturation", "Brightness" }));
+        colorOrderSelector.setSelectedIndex(3);
         colorOrderSelector.addItemListener(evt -> ColorOrderSelectorItemStateChanged(evt));
 
         realSizeList.setFont(new java.awt.Font("Tahoma", 0, 10));

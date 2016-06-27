@@ -21,23 +21,27 @@ public class ListPanel extends JPanel implements Observer{
     private String colorOrderType;
     private String listShowType;
     private MainPanel mainPanel;
+    private GraphPanel graphPanel;
+    private DataPanel dataPanel;
     private SelectionController mouseControl;
     private boolean loadImages;
     private boolean bFirst;
 
     /************************************************************************************/
-    public ListPanel(MainPanel mainPanel) {
+    public ListPanel(MainPanel mainPanel, GraphPanel graphPanel, DataPanel dataPanel) {
         super();
         this.imageChooser = new ImageChooser();
         this.orderType = "color";
-        this.colorOrderType = "HSL";
+        this.colorOrderType = "RGB";
         this.listShowType = "modified";
         this.mainPanel = mainPanel;
+        this.graphPanel = graphPanel;
+        this.dataPanel = dataPanel;
         this.imageChooser.addObserver(this);
         this.bFirst = true;
 
         //add the mouse controllers to the panel
-        this.mouseControl = new SelectionController(this, mainPanel);
+        this.mouseControl = new SelectionController(this);
         this.addMouseListener(mouseControl);
         this.addMouseMotionListener(mouseControl);
 
@@ -156,10 +160,14 @@ public class ListPanel extends JPanel implements Observer{
     public void updateImageMain(ImageInfo image){
         // seta primeira imagem da lista no mainpanel
         this.mainPanel.setImg(image.getImgOrig());
-        this.mainPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
-        this.mainPanel.setYear((int)image.getYear());
-        this.mainPanel.selectHSV((double) image.getHueValue(), (double) image.getSatValue());
+        this.dataPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
+        this.dataPanel.setYear((int)image.getYear());
+        this.dataPanel.setImageLoaded(true);
+        this.graphPanel.selectHSV((double) image.getHueValue(), (double) image.getSatValue(), (double) image.getLumValue());
+        
         this.mainPanel.repaint();
+        this.graphPanel.repaint();
+        this.dataPanel.repaint();
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
@@ -178,13 +186,13 @@ public class ListPanel extends JPanel implements Observer{
                 if(i.getPaintingHeigth() > maxHeight)
                     maxHeight = i.getPaintingHeigth();
             }
+            this.graphPanel.getImgList().clear();
         }
 
-        this.mainPanel.getHueList().clear();
-        this.mainPanel.getSatList().clear();
         for(ImageInfo i : imageChooser.getImageList()){
             if(this.loadImages == true) {
                 loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
+                this.graphPanel.addHSV(i);
             }
             //seta imageInfo
             if(this.listShowType == "modified") {
@@ -195,8 +203,8 @@ public class ListPanel extends JPanel implements Observer{
                 setImageInfo(i, i.getImgListReal().getWidth(this), i.getImgListReal().getHeight(this), listWidth, squareTop);
                 listWidth += i.getImgListReal().getWidth(this) + 3;
             }
-            this.mainPanel.addHSV((double) i.getHueValue(), (double) i.getSatValue());
         }
+
         this.loadImages = false;
         if(imageChooser.getImageList().size() > 0) {
             if(listWidth > 1270){
