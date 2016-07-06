@@ -26,9 +26,11 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private int     x;
     private int     y;
 
+    private int     id;
+
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, float year, int month, String name){
+    public ImageInfo(int id, float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, float year, int month, String name){
         this.name = name;
         this.year = year;
         this.month = month;
@@ -41,6 +43,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.hueValue = hueValue;
         this.satValue = satValue;
         this.lumValue = lumValue;
+        this.id = id;
     }
 
     /**********************************************************************************************/
@@ -97,7 +100,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return lumValue;
     }
 
-    public float getTotalSize() {
+    public float getArea() {
         return this.paintingHeigth * this.paintingWidth;
     }
 
@@ -123,6 +126,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
     
     public int getY(){
         return this.y;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /** Setters */
@@ -194,6 +201,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.y = y;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**********************************************************************************************/
     /** Comparadores */
     @Override
@@ -232,7 +243,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public int compareToBySize(ImageInfo o) {
         /* For Ascending order*/
-        return (int)((this.getTotalSize() - o.getTotalSize())*100);
+        return (int)((this.getArea() - o.getArea())*100);
 
         /* For Descending order*/
         //return o.getTotalSize() - this.getTotalSize();

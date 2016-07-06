@@ -5,8 +5,8 @@ import java.awt.*;
  * Created by Vinicius on 12/05/2016.
  */
 public class ImageShowTool extends JFrame {
-    private MainPanel         ImageInfoPanel;
-    private JScrollPane       ImageListPanel;
+    private MainPanel mainPanel;
+    private JScrollPane listScrollPanel;
     private GraphPanel        graphPanel;
     private DataPanel         dataPanel;
     private JMenu             fileMenu;
@@ -15,9 +15,10 @@ public class ImageShowTool extends JFrame {
     private JRadioButton      byColor;
     private JRadioButton      byYear;
     private JRadioButton      bySize;
-    private ListPanel         showListPanel;
+    private ListPanel listPanel;
     private JComboBox<String> colorOrderSelector;
     private JToggleButton     realSizeList;
+    private JScrollPane       mainScrollPanel;
 
     public ImageShowTool(String name){
         super(name);
@@ -27,11 +28,12 @@ public class ImageShowTool extends JFrame {
 
     private void initComponents(){
         buttonGroup1        = new javax.swing.ButtonGroup();
-        ImageInfoPanel      = new MainPanel();
+        mainPanel           = new MainPanel();
+        mainScrollPanel     = new JScrollPane();
         graphPanel          = new GraphPanel();
         dataPanel           = new DataPanel();
-        showListPanel       = new ListPanel(ImageInfoPanel, graphPanel, dataPanel);
-        ImageListPanel      = new JScrollPane(showListPanel);
+        listPanel           = new ListPanel(mainPanel, graphPanel, dataPanel);
+        listScrollPanel     = new JScrollPane(listPanel);
         byColor             = new javax.swing.JRadioButton();
         byYear              = new javax.swing.JRadioButton();
         bySize              = new javax.swing.JRadioButton();
@@ -42,19 +44,19 @@ public class ImageShowTool extends JFrame {
 
         //create the frame menu File and add buttons to it
         fileMenu.setText("File");
-        fileMenu.add(showListPanel.getLoadFile());
+        fileMenu.add(listPanel.getLoadFile());
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
         //configure frame and panels
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ImageInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        showListPanel.setPreferredSize(new Dimension(1270,100));
+        mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        listPanel.setPreferredSize(new Dimension(1270,100));
 
         //main panel layout
-        javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(ImageInfoPanel);
-        ImageInfoPanel.setLayout(ImageInfoPanelLayout);
+        javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(ImageInfoPanelLayout);
         ImageInfoPanelLayout.setVerticalGroup(
                 ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 575, Short.MAX_VALUE)
@@ -83,7 +85,7 @@ public class ImageShowTool extends JFrame {
         dataPanel.setLayout(dataPanelLayout);
         dataPanelLayout.setHorizontalGroup(
                 dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(200, 250, Short.MAX_VALUE)
+                        .addGap(100, 150, Short.MAX_VALUE)
         );
         dataPanelLayout.setVerticalGroup(
                 dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,9 +93,9 @@ public class ImageShowTool extends JFrame {
         );
 
         //list layout
-        ImageListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
-        ImageListPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        ImageListPanel.setBounds(0, 0, 1000, 150);
+        listScrollPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
+        listScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        listScrollPanel.setBounds(0, 0, 1000, 150);
         
         //configure buttons group
         buttonGroup1.add(byColor);
@@ -131,18 +133,18 @@ public class ImageShowTool extends JFrame {
                                         .addComponent(bySize)
                                         .addComponent(colorOrderSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ImageListPanel)
+                                .addComponent(listScrollPanel)
                                 .addContainerGap())
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(dataPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(ImageInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ImageListPanel)
+                                        .addComponent(listScrollPanel)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(5, 5, 5)
                                                 .addComponent(realSizeList)
@@ -157,7 +159,7 @@ public class ImageShowTool extends JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ImageInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -167,20 +169,20 @@ public class ImageShowTool extends JFrame {
 
     private void ColorOrderSelectorItemStateChanged(java.awt.event.ItemEvent evt) {
         if(evt.getStateChange() == 1){
-            this.showListPanel.setColorOrderType(evt.getItem().toString());
+            this.listPanel.setColorOrderType(evt.getItem().toString());
         }
     }
 
     private void jRadioButtonActionPerformed(java.awt.event.ActionEvent evt, String orderType) {
         //System.out.println("action button pressed, order type: " + orderType);
-        this.showListPanel.setOrderType(orderType);
+        this.listPanel.setOrderType(orderType);
     }
 
     private void realSizeListActionPerformed(java.awt.event.ActionEvent evt) {
-        if(this.showListPanel.getListShowType() == "modified"){
-            this.showListPanel.setListShowType("real");
+        if(this.listPanel.getListShowType() == "modified"){
+            this.listPanel.setListShowType("real");
         } else {
-            this.showListPanel.setListShowType("modified");
+            this.listPanel.setListShowType("modified");
         }
     }
 

@@ -1,6 +1,4 @@
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class ImageChooser extends java.util.Observable{
                     float year = s.nextFloat();
                     int month = s.nextInt();
                     s.skip("     ");
-                    ImageInfo imageTemp = new ImageInfo(red, green, blue, rgb, hue, sat, value, pw, ph, year, month, s.nextLine());
+                    ImageInfo imageTemp = new ImageInfo(i+1, red, green, blue, rgb, hue, sat, value, pw, ph, year, month, s.nextLine());
                     imageList.add(imageTemp);
                 }
             } finally {
@@ -58,6 +56,49 @@ public class ImageChooser extends java.util.Observable{
             }
             this.setChanged();
             this.notifyObservers();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadCSV(String name){
+        this.imageList.clear();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(name));
+            try{
+                String line;
+                String cvsSplitBy = ";";
+                br.readLine();
+                while((line = br.readLine()) != null){
+                    String[] data = line.split(cvsSplitBy);
+                    int id = Integer.parseInt(data[0]);
+                    float red = Float.parseFloat(data[1]);
+                    float green = Float.parseFloat(data[2]);
+                    float blue = Float.parseFloat(data[3]);
+                    float rgb = Float.parseFloat(data[4]);
+                    float hue = Float.parseFloat(data[5]);
+                    float sat = Float.parseFloat(data[6]);
+                    float brit = Float.parseFloat(data[7]);
+                    float ph = Float.parseFloat(data[8]);
+                    float pw = Float.parseFloat(data[9]);
+                    float year = Float.parseFloat(data[10]);
+                    int month = Integer.parseInt(data[11]);
+                    ImageInfo imageTemp = new ImageInfo(id, red, green, blue, rgb, hue, sat, brit, pw, ph, year, month, data[12]);
+                    imageList.add(imageTemp);
+                }
+            } finally {
+                if (br != null) {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            this.setChanged();
+            this.notifyObservers();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

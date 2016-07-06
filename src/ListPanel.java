@@ -51,13 +51,25 @@ public class ListPanel extends JPanel implements Observer{
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setCurrentDirectory(new File("./images"));
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text", "CSV files (*csv)", "csv");
                 chooser.setFileFilter(filter);
 
                 int returnVal = chooser.showOpenDialog(null);
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    imageChooser.loadImages(chooser.getSelectedFile().getPath());
+
+                    String extension = "";
+                    int lastpos = chooser.getSelectedFile().getPath().lastIndexOf('.');
+                    if (lastpos > 0) {
+                        extension = chooser.getSelectedFile().getPath().substring(lastpos+1);
+                    }
+                    if(extension.toLowerCase().equals("csv")) {
+                        imageChooser.loadCSV(chooser.getSelectedFile().getPath());
+                    }
+                    if(extension.toLowerCase().equals("txt")) {
+                        imageChooser.loadImages(chooser.getSelectedFile().getPath());
+                    }
+
                     loadImages = true;
                     setOrderType(ListPanel.this.orderType);
                 }
@@ -159,7 +171,7 @@ public class ListPanel extends JPanel implements Observer{
     //atualiza main com a imagem selecionada
     public void updateImageMain(ImageInfo image){
         // seta primeira imagem da lista no mainpanel
-        this.mainPanel.setImg(image.getImgOrig());
+        this.dataPanel.setImg(image.getImgOrig());
         this.dataPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
         this.dataPanel.setYear((int)image.getYear());
         this.dataPanel.setImageLoaded(true);

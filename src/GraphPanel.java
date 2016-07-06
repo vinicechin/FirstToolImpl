@@ -44,13 +44,13 @@ public class GraphPanel extends JPanel {
 
         //red: 255 double, green: 255 double, blue: 255 double, hue: 360 double, sat: 100 double, bri: 100 double, year: n double(int), month: 12 int, height: m double, width: i double, total size: m*i double
         this.vertexSelectorX  = new javax.swing.JComboBox<>();
-        this.vertexSelectorX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Total Size" }));
+        this.vertexSelectorX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Area" }));
         this.vertexSelectorX.setSelectedIndex(0);
         this.add(this.vertexSelectorX);
         this.vertexSelectorX.addItemListener(evt -> VertexSelectorXItemStateChanged(evt));
 
         this.vertexSelectorY  = new javax.swing.JComboBox<>();
-        this.vertexSelectorY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Total Size" }));
+        this.vertexSelectorY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Area" }));
         this.vertexSelectorY.setSelectedIndex(1);
         this.add(this.vertexSelectorY);
         this.vertexSelectorY.addItemListener(evt -> VertexSelectorYItemStateChanged(evt));
@@ -108,9 +108,9 @@ public class GraphPanel extends JPanel {
         g.drawImage(this.hsvImage, (int)circleLeft - deslocDifImage, (int)circleTop - deslocDifImage + deslocYImage, (int)circleSize + sizeDifImage, (int)circleSize + sizeDifImage, this);
         g.drawImage(this.lumImage, (int)circleLeft - deslocDifImage/2, (int)circleTop - deslocDifImage + deslocYImage - this.lumImage.getHeight(this), (int)circleSize + sizeDifImage/2, this.lumImage.getHeight(this), this);
 
-        //g.setColor(new Color(0,0,150));
-        //Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
-        //g.draw(circle);
+//        g.setColor(new Color(0,0,150));
+//        Ellipse2D.Double circle = new Ellipse2D.Double(circleLeft, circleTop, circleSize, circleSize);
+//        g.draw(circle);
 
         g.setColor(new Color(0, 0, 0));
         g.drawLine((int)(circleLeft - 10), (int)centerY, (int)(circleLeft + circleSize + 10), (int)centerY);
@@ -188,8 +188,8 @@ public class GraphPanel extends JPanel {
                 maxHeight = this.imgList.get(i).getPaintingHeigth();
             if(maxWidth < this.imgList.get(i).getPaintingWidth())
                 maxWidth = this.imgList.get(i).getPaintingWidth();
-            if(maxTS < this.imgList.get(i).getTotalSize())
-                maxTS = this.imgList.get(i).getTotalSize();
+            if(maxTS < this.imgList.get(i).getArea())
+                maxTS = this.imgList.get(i).getArea();
             if(minYear > Math.round(this.imgList.get(i).getYear()))
                 minYear = Math.round(this.imgList.get(i).getYear());
         }
@@ -211,9 +211,9 @@ public class GraphPanel extends JPanel {
                 case "Month":       maxX = 12;  pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getMonth()      / maxX)); this.originLabel.setText("0"); this.xLabel.setText("12"); break;
 
                 case "Year":        pX = graph2dLeft + (graph2DSizeX * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.originLabel.setText(String.valueOf(Math.round(minYear))); this.xLabel.setText(String.valueOf(Math.round(maxYear))); break;
-                case "Height":      pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingHeigth()   / (maxHeight + 5)))    ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxHeight)); break;
-                case "Width":       pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingWidth()    / (maxWidth + 5)))     ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxWidth)); break;
-                case "Total Size":  pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getTotalSize()        / (maxTS + 5)))        ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxTS)); break;
+                case "Height":      pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingHeigth() / (maxHeight + 5))) ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxHeight)); break;
+                case "Width":       pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5)))  ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxWidth)); break;
+                case "Area":        pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getArea()           / (maxTS + 5)))     ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxTS)); break;
 
                 case "Full Date":   maxX = 12;  pX = graph2dLeft + (graph2DSizeX * ( (Math.round(this.imgList.get(i).getYear() - minYear) + this.imgList.get(i).getMonth()/maxX) / (Math.round(maxYear - minYear) + 1) ) ); this.originLabel.setText(String.valueOf(Math.round(minYear)) + "/1"); this.xLabel.setText(String.valueOf(Math.round(maxYear)) + "/12"); break;
             }
@@ -227,9 +227,9 @@ public class GraphPanel extends JPanel {
                 case "Month":       maxY = 12;  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getMonth()      / maxY)); this.yLabel.setText("12"); break;
 
                 case "Year":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
-                case "Height":      pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingHeigth() / (maxHeight+5)))        ; this.yLabel.setText(String.valueOf(maxHeight)); break;
-                case "Width":       pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5)))       ; this.yLabel.setText(String.valueOf(maxWidth)); break;
-                case "Total Size":  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getTotalSize()      / (maxTS + 5)))          ; this.yLabel.setText(String.valueOf(maxTS)); break;
+                case "Height":      pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingHeigth() / (maxHeight+5))) ; this.yLabel.setText(String.valueOf(maxHeight)); break;
+                case "Width":       pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5))); this.yLabel.setText(String.valueOf(maxWidth)); break;
+                case "Area":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getArea()           / (maxTS + 5)))   ; this.yLabel.setText(String.valueOf(maxTS)); break;
 
                 case "Full Date":   maxY = 12;  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ( (Math.round(this.imgList.get(i).getYear() - minYear) + this.imgList.get(i).getMonth()/maxY) / (Math.round(maxYear - minYear) + 1) ) ); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
             }
@@ -249,13 +249,13 @@ public class GraphPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         //inicializations
-        double circleSize = ((7.0 * this.getWidth())/10);
+        double circleSize = ((5.0 * this.getWidth())/10);
         double circleLeft = this.getWidth() - ((5.0 * this.getWidth())/10) - circleSize/2;
         double circleTop = this.getHeight() - ((0.5 * this.getHeight())/10) - circleSize;
         double lumTop = circleTop - this.lumImage.getHeight(this);
         double centerX = circleLeft + circleSize/2;
         double centerY = circleTop + circleSize/2;
-        double drawDif = ((1.2 * this.getWidth())/10);
+        double drawDif = ((1.0 * this.getWidth())/10);
         
         //seta para desenhar novamente
         Graphics2D g2d = (Graphics2D)g;
