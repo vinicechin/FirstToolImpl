@@ -171,15 +171,9 @@ public class ListPanel extends JPanel implements Observer{
     //atualiza main com a imagem selecionada
     public void updateImageMain(ImageInfo image){
         // seta primeira imagem da lista no mainpanel
-        this.dataPanel.setImg(image.getImgOrig());
-        this.dataPanel.setSize(image.getPaintingWidth(), image.getPaintingHeigth());
-        this.dataPanel.setYear((int)image.getYear());
-        this.dataPanel.setImageLoaded(true);
+        this.dataPanel.setDataInfo(image);
+        this.mainPanel.selectImage(image);
         this.graphPanel.selectHSV((double) image.getHueValue(), (double) image.getSatValue(), (double) image.getLumValue());
-        
-        this.mainPanel.repaint();
-        this.graphPanel.repaint();
-        this.dataPanel.repaint();
     }
     
     //carrega as imagens quando ouve load de um novo file de imagens
@@ -205,6 +199,10 @@ public class ListPanel extends JPanel implements Observer{
             if(this.loadImages == true) {
                 loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
                 this.graphPanel.addHSV(i);
+
+                // atualiza charts no main panel
+                this.mainPanel.setImageList(this.imageChooser.getImageList());
+                this.mainPanel.repaint();
             }
             //seta imageInfo
             if(this.listShowType == "modified") {

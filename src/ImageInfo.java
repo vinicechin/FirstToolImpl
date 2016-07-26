@@ -1,11 +1,16 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by Vinicius on 15/05/2016.
  */
 public class ImageInfo implements Comparable<ImageInfo>{
     private String 	name;
-    private float 	year;
+    private int 	year;
     private int     month;
     private float	paintingWidth;
     private float	paintingHeigth;
@@ -27,10 +32,15 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private int     y;
 
     private int     id;
+    private String  categoria;
+    private String  autor;
+    private double  mLatitude;
+    private double  mLongitude;
+    private Image   googleImg;
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(int id, float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, float year, int month, String name){
+    public ImageInfo(int id, float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, int year, int month, String name, String categoria, String autor, double mLatitude, double mLongitude){
         this.name = name;
         this.year = year;
         this.month = month;
@@ -44,6 +54,24 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.satValue = satValue;
         this.lumValue = lumValue;
         this.id = id;
+        this.categoria = categoria;
+        this.autor = autor;
+        this.mLatitude = mLatitude;
+        this.mLongitude = mLongitude;
+
+        int zoom =12;
+        this.googleImg = null;
+        try {
+            String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+this.mLatitude+","+this.mLongitude+"&zoom="+zoom+"&size=612x612&scale=2&maptype=roadmap";
+            URL url = new URL(imageUrl);
+            InputStream is = url.openStream();
+
+            this.googleImg = ImageIO.read(is);
+
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**********************************************************************************************/
@@ -64,12 +92,12 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return this.imgOrig;
     }
 
-    public float getYear() {
+    public int getYear() {
         return this.year;
     }
 
     public int getMonth() {
-        return month;
+        return this.month;
     }
 
     public float getRedValue() {
@@ -132,6 +160,27 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return id;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public double getmLatitude() {
+        return mLatitude;
+    }
+
+    public double getmLongitude() {
+        return mLongitude;
+    }
+
+    public Image getGoogleImg() {
+        return googleImg;
+    }
+
+    /**********************************************************************************************/
     /** Setters */
     public void setName(String name) {
         this.name = name;
@@ -149,7 +198,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.imgOrig = img;
     }
 
-    public void setYear(float year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
@@ -205,6 +254,26 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.id = id;
     }
 
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setmLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
+    }
+
+    public void setmLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
+    }
+
+    public void setGoogleImg(Image googleImg) {
+        this.googleImg = googleImg;
+    }
+
     /**********************************************************************************************/
     /** Comparadores */
     @Override
@@ -235,7 +304,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public int compareToByYear(ImageInfo o) {
         /* For Ascending order*/
-        return (int) ((this.year - o.getYear())*100);
+        if(this.year - o.getYear() == 0){
+            return this.id - o.getId();
+        }
+        return ((this.year - o.getYear())*100);
 
         /* For Descending order*/
         //return o.getYear() - this.year;
@@ -254,7 +326,6 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
         return (this.x < p.x) && (this.y < p.y) && (this.x + this.width > p.x) && (this.y + this.height > p.y);
     }
-
     /**********************************************************************************************/
 
 }

@@ -43,10 +43,10 @@ public class ImageChooser extends java.util.Observable{
                     float value = s.nextFloat();
                     float ph = s.nextFloat();
                     float pw = s.nextFloat();
-                    float year = s.nextFloat();
+                    float year = Math.round(s.nextFloat());
                     int month = s.nextInt();
                     s.skip("     ");
-                    ImageInfo imageTemp = new ImageInfo(i+1, red, green, blue, rgb, hue, sat, value, pw, ph, year, month, s.nextLine());
+                    ImageInfo imageTemp = new ImageInfo(i+1, red, green, blue, rgb, hue, sat, value, pw, ph, (int)year, month, s.nextLine(), "Not Implemented", "Not Implemented", 0.0, 0.0);
                     imageList.add(imageTemp);
                 }
             } finally {
@@ -81,9 +81,13 @@ public class ImageChooser extends java.util.Observable{
                     float brit = Float.parseFloat(data[7]);
                     float ph = Float.parseFloat(data[8]);
                     float pw = Float.parseFloat(data[9]);
-                    float year = Float.parseFloat(data[10]);
+                    int year = Integer.parseInt(data[10]);
                     int month = Integer.parseInt(data[11]);
-                    ImageInfo imageTemp = new ImageInfo(id, red, green, blue, rgb, hue, sat, brit, pw, ph, year, month, data[12]);
+                    String categoria = data[12];
+                    String autor = data[13];
+                    double mLatitude = Double.parseDouble(data[14]);
+                    double mLongitude = Double.parseDouble(data[15]);
+                    ImageInfo imageTemp = new ImageInfo(id, red, green, blue, rgb, hue, sat, brit, pw, ph, year, month, data[16], categoria, autor, mLatitude, mLongitude);
                     imageList.add(imageTemp);
                 }
             } finally {

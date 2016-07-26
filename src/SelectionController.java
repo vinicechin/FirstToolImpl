@@ -30,6 +30,7 @@ public class SelectionController extends MouseAdapter implements WindowListener{
             for (ImageInfo i : this.listPanel.getImageChooser().getImageList()) {
                 if (i.contains(e.getPoint())) {
                     this.listPanel.updateImageMain(i);
+                    break;
                 }
             }
             //repaint the panel

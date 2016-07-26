@@ -1,12 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import org.jfree.chart.*;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  * Created by Vinicius on 12/05/2016.
  */
 public class ImageShowTool extends JFrame {
-    private MainPanel mainPanel;
-    private JScrollPane listScrollPanel;
+    private MainPanel         mainPanel;
+    private JScrollPane       listScrollPanel;
     private GraphPanel        graphPanel;
     private DataPanel         dataPanel;
     private JMenu             fileMenu;
@@ -18,7 +20,6 @@ public class ImageShowTool extends JFrame {
     private ListPanel listPanel;
     private JComboBox<String> colorOrderSelector;
     private JToggleButton     realSizeList;
-    private JScrollPane       mainScrollPanel;
 
     public ImageShowTool(String name){
         super(name);
@@ -29,7 +30,6 @@ public class ImageShowTool extends JFrame {
     private void initComponents(){
         buttonGroup1        = new javax.swing.ButtonGroup();
         mainPanel           = new MainPanel();
-        mainScrollPanel     = new JScrollPane();
         graphPanel          = new GraphPanel();
         dataPanel           = new DataPanel();
         listPanel           = new ListPanel(mainPanel, graphPanel, dataPanel);
@@ -188,6 +188,7 @@ public class ImageShowTool extends JFrame {
 
     /** The entry main() method */
     public static void main(String[] args) {
+
         java.awt.EventQueue.invokeLater(() -> {
             new ImageShowTool("teste").setVisible(true);
             System.out.println("Started Frame");

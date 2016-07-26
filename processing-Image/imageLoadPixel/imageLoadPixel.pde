@@ -1,48 +1,49 @@
 PImage img;
-String nomes[] = {"439px-Self-Portrait9_Van_Gogh.jpg",
-                  "439px-Vincent_Willem_van_Gogh_108.jpg",
-                  "450px-Van_Gogh_-_Selbstbildnis_mit_Strohhut_und_Pfeife.jpeg",
-                  "454px-Van_Gogh_-_Selbsbildnis13.jpeg",
-                  "456px-Van_Gogh_-_Selbstbildnis_mit_Strohhut1.jpeg",
-                  "457px-Van_Gogh_Self-Portrait_Autumn_1887.jpg",
-                  "463px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Detroit.jpg",
-                  "474px-Van_Gogh_Self-Portrait_with_Straw_Hat_1887-Metropolitan.jpg",
-                  "485px-Vincent_van_Gogh_-_Zelfportret_-_Google_Art_Project.jpg",
-                  "Self-Portrait_with_Dark_Felt_Hat_at_the_Easel22.jpg",
-                  "Self-Portrait_with_Pipe_and_Glass28.jpg",
-                  "Self-Portrait2.jpg",
-                  "Self-Portrait6.jpg",
-                  "Self-Portrait7.jpg",
-                  "Van_Gogh_-_Selbstbildnis.jpeg",
-                  "Van_Gogh_-_Selbstbildnis_mit_Pfeife.jpeg",
-                  "Van_Gogh_Self-Portrait_with_Dark_Felt_Hat_1886.jpg",
-                  "Van_Gogh_Self-Portrait_with_Grey_Felt_Hat_1886-87_Rijksmuseum.jpg",
-                  "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project.jpg",
-                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(454045).jpg",
-                  "Vincent_van_Gogh_-_Self-portrait_-_Google_Art_Project_(nAHHHe2ggxUGyg).jpg",
-                  "Vincent_van_Gogh_-_Self-portrait_with_pipe_-_Google_Art_Project.jpg",
-                  "Vincent_van_Gogh,_Portrait_of_Theo_van_Gogh_(1887).jpg",
-                  "Self-Portrait_with_a_Japanese_Print18.jpg",
-                  "Vincent_van_Gogh_-_Self-portrait_with_grey_felt_hat_-_Google_Art_Project.jpg",
-                  "Van_Gogh_-_Selbstbildnis27.jpeg",
-                  "Van_Gogh_-_Selbstbildnis_29.jpeg",
-                  "Van_Gogh_self_portrait_as_an_artist.jpg",
-                  "Vincent_Willem_van_Gogh_110.jpg",
-                  "VanGogh-self-portrait-dedicated_to_gaugin.jpg",
-                  "Van_Gogh_-_Selbstbildnis34.jpeg",
-                  "Vincent_Willem_van_Gogh_106.jpg",
-                  "VanGogh-self-portrait-with_bandaged_ear.jpg",
-                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_(719161).jpg",
-                  "Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_2.jpg",
-                  "Vincent_Willem_van_Gogh_102.jpg",
-                  "Vincent_Willem_van_Gogh_103.jpg"};
+PImage[] imgList;
+Table table;
+String[] list;
+int count = 0;
 
 void setup() {
   size(400, 500);
-  for(int i=0; i<nomes.length; i++){
-    img = loadImage(nomes[i]);
-    calculate(i);
-  }
+  
+  String path = sketchPath("");  
+  File dir = new File(path);
+  list = dir.list();
+  
+  table = new Table();
+  table.addColumn("id");
+  table.addColumn("red");
+  table.addColumn("green");
+  table.addColumn("blue");
+  table.addColumn("RGB");
+  table.addColumn("hue(360)");
+  table.addColumn("sat(100)");
+  table.addColumn("brit(100)");
+  table.addColumn("altura");
+  table.addColumn("largura");
+  table.addColumn("ano");
+  table.addColumn("mes");
+  table.addColumn("categoria");
+  table.addColumn("autor");
+  table.addColumn("Museum Latitude");
+  table.addColumn("Museum Longitude");
+  table.addColumn("nome");
+  
+  if (list == null) {
+    println("Folder does not exist or cannot be accessed.");
+  } else {
+    for(int i = 0; i < list.length; i++){
+      if (list[i].toLowerCase().endsWith("jpg") || list[i].toLowerCase().endsWith("jpeg")) {
+        img = loadImage(list[i]);
+        calculate(i);
+        count++;
+      }
+    }
+  } 
+  
+  saveTable(table,"./dataset.csv");
+  println("Salvo");
 }
 
 void calculate(int pos){
@@ -79,13 +80,27 @@ void calculate(int pos){
   lTotal = lTotal/nPixels;
   
   float total = sqrt(pow(rTotal,2) + pow(gTotal,2) + pow(bTotal,2));
-  println("\n" + nomes[pos]);
-  //println("Media RGB: " + rTotal + " " + gTotal + " " + bTotal + " = " + total);
-  //println("Hue: " + hTotal + " Saturation: " + sTotal);
-  //println(rTotal + " " + gTotal + " " + bTotal + " " + total + " " + hTotal + " " + sTotal);
-  println(lTotal);
+  
+  TableRow newRow = table.addRow();
+  newRow.setInt("id",table.getRowCount());
+  newRow.setFloat("red",rTotal);
+  newRow.setFloat("green",gTotal);
+  newRow.setFloat("blue",bTotal);
+  newRow.setFloat("RGB",total);
+  newRow.setFloat("hue(360)",hTotal);
+  newRow.setFloat("sat(100)",sTotal);
+  newRow.setFloat("brit(100)",lTotal);
+  newRow.setFloat("altura",1.0);
+  newRow.setFloat("largura",1.0);
+  newRow.setInt("ano",1);
+  newRow.setInt("mes",1);
+  newRow.setString("categoria","not defined");
+  newRow.setString("nome",list[pos]);
+  newRow.setString("autor","someone");
+  newRow.setFloat("Museum Latitude", 0.0);
+  newRow.setFloat("Museum Longitude", 0.0);
 }
 
 void draw() {
-  image(img,0,0);
+  //image(img,0,0);
 }

@@ -29,41 +29,11 @@ public class GraphPanel extends JPanel {
     private double selectedHue;
     private double selectedSat;
     private double selectedLum;
-    private JComboBox<String> vertexSelectorX;
-    private JComboBox<String> vertexSelectorY;
-    private JLabel originLabel;
-    private JLabel xLabel;
-    private JLabel yLabel;
-    private String xAxis;
-    private String yAxis;
 
     /***************************************************************************************************/
     public GraphPanel(){
         super();
         this.imgList = new ArrayList<>();
-
-        //red: 255 double, green: 255 double, blue: 255 double, hue: 360 double, sat: 100 double, bri: 100 double, year: n double(int), month: 12 int, height: m double, width: i double, total size: m*i double
-        this.vertexSelectorX  = new javax.swing.JComboBox<>();
-        this.vertexSelectorX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Area" }));
-        this.vertexSelectorX.setSelectedIndex(0);
-        this.add(this.vertexSelectorX);
-        this.vertexSelectorX.addItemListener(evt -> VertexSelectorXItemStateChanged(evt));
-
-        this.vertexSelectorY  = new javax.swing.JComboBox<>();
-        this.vertexSelectorY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Red", "Green", "Blue", "Hue", "Saturation", "Brightness", "Year", "Month", "Full Date", "Height", "Width", "Area" }));
-        this.vertexSelectorY.setSelectedIndex(1);
-        this.add(this.vertexSelectorY);
-        this.vertexSelectorY.addItemListener(evt -> VertexSelectorYItemStateChanged(evt));
-
-        this.originLabel= new JLabel("0", JLabel.LEFT);
-        this.xLabel= new JLabel("255", JLabel.LEFT);
-        this.yLabel= new JLabel("255", JLabel.LEFT);
-        this.add(this.originLabel);
-        this.add(this.xLabel);
-        this.add(this.yLabel);
-
-        this.xAxis = "Red";
-        this.yAxis = "Green";
 
         this.hsvImage = null;
         this.lumImage = null;
@@ -76,21 +46,6 @@ public class GraphPanel extends JPanel {
     }
 
     /***************************************************************************************************/
-    private void VertexSelectorXItemStateChanged(java.awt.event.ItemEvent evt) {
-        if(evt.getStateChange() == 1){
-            this.xAxis = evt.getItem().toString();
-            this.repaint();
-        }
-    }
-
-    private void VertexSelectorYItemStateChanged(java.awt.event.ItemEvent evt) {
-        if(evt.getStateChange() == 1){
-            this.yAxis = evt.getItem().toString();
-            this.repaint();
-        }
-    }
-
-    /***************************************************************************************************/
     public void addHSV(ImageInfo img){
         this.imgList.add(img);
     }
@@ -99,6 +54,7 @@ public class GraphPanel extends JPanel {
         this.selectedHue = hue;
         this.selectedSat = sat;
         this.selectedLum = lum;
+        this.repaint();
     }
 
     /***************************************************************************************************/
@@ -162,96 +118,12 @@ public class GraphPanel extends JPanel {
     }
 
     /***************************************************************************************************/
-    public void paint2DGraph(Graphics2D g){
-        double graph2DSizeX = ((7.0 * this.getWidth())/10);
-        double graph2DSizeY = ((3.0 * this.getHeight())/10);
-        double graph2dLeft = this.getWidth() - ((5.0 * this.getWidth())/10) - graph2DSizeX/2;
-        double graph2dTop = ((0.5 * this.getHeight())/10);
-
-        //boxes
-        this.vertexSelectorX.setBounds((int) (this.getWidth()/2 - this.vertexSelectorX.getSize().getWidth()), 6, 70, 18);
-        this.vertexSelectorY.setBounds(this.getWidth()/2 + 5, 6, 70, 18);
-        //Axis
-        originLabel.setBounds((int) graph2dLeft - 20, (int) (graph2dTop + graph2DSizeY) + 5, 45, 15);
-        xLabel.setBounds((int) (graph2dLeft + graph2DSizeX) - 5, (int) (graph2dTop + graph2DSizeY) + 5, 45, 15);
-        yLabel.setBounds((int) graph2dLeft - 20, (int) graph2dTop - 15, 45, 15);
-        g.drawLine((int) graph2dLeft, (int) (graph2dTop + graph2DSizeY), (int) graph2dLeft, (int) graph2dTop); //Y
-        g.drawLine((int) graph2dLeft, (int) (graph2dTop + graph2DSizeY), (int) (graph2dLeft + graph2DSizeX), (int) (graph2dTop + graph2DSizeY)); //X
-
-        //sets max values for year, height, width, totalSize
-        double maxYear = 0, maxHeight = 0, maxWidth = 0, maxTS = 0;
-        double minYear = 2016;
-        for(int i=0; i<this.imgList.size(); i++) {
-            if(maxYear < Math.round(this.imgList.get(i).getYear()))
-                maxYear = Math.round(this.imgList.get(i).getYear());
-            if(maxHeight < this.imgList.get(i).getPaintingHeigth())
-                maxHeight = this.imgList.get(i).getPaintingHeigth();
-            if(maxWidth < this.imgList.get(i).getPaintingWidth())
-                maxWidth = this.imgList.get(i).getPaintingWidth();
-            if(maxTS < this.imgList.get(i).getArea())
-                maxTS = this.imgList.get(i).getArea();
-            if(minYear > Math.round(this.imgList.get(i).getYear()))
-                minYear = Math.round(this.imgList.get(i).getYear());
-        }
-
-        //points
-        //red: 255 double, green: 255 double, blue: 255 double, hue: 360 double, sat: 100 double, bri: 100 double, year: n double(int), month: 12 int, height: m double, width: i double, total size: m*i double
-        double pointSize = 5;
-        double pX = graph2dLeft, pY = graph2dTop;
-        Ellipse2D.Double point;
-        double maxX, maxY;
-        for(int i=0; i<this.imgList.size(); i++) {
-            switch (this.xAxis){
-                case "Red":         maxX = 255; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getRedValue()   / maxX)); this.originLabel.setText("0"); this.xLabel.setText("255"); break;
-                case "Green":       maxX = 255; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getGreenValue() / maxX)); this.originLabel.setText("0"); this.xLabel.setText("255"); break;
-                case "Blue":        maxX = 255; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getBlueValue()  / maxX)); this.originLabel.setText("0"); this.xLabel.setText("255"); break;
-                case "Hue":         maxX = 360; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getHueValue()   / maxX)); this.originLabel.setText("0"); this.xLabel.setText("360"); break;
-                case "Saturation":  maxX = 100; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getSatValue()   / maxX)); this.originLabel.setText("0"); this.xLabel.setText("100"); break;
-                case "Brightness":  maxX = 100; pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getLumValue()   / maxX)); this.originLabel.setText("0"); this.xLabel.setText("100"); break;
-                case "Month":       maxX = 12;  pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getMonth()      / maxX)); this.originLabel.setText("0"); this.xLabel.setText("12"); break;
-
-                case "Year":        pX = graph2dLeft + (graph2DSizeX * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.originLabel.setText(String.valueOf(Math.round(minYear))); this.xLabel.setText(String.valueOf(Math.round(maxYear))); break;
-                case "Height":      pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingHeigth() / (maxHeight + 5))) ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxHeight)); break;
-                case "Width":       pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5)))  ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxWidth)); break;
-                case "Area":        pX = graph2dLeft + (graph2DSizeX * (this.imgList.get(i).getArea()           / (maxTS + 5)))     ; this.originLabel.setText("0"); this.xLabel.setText(String.valueOf(maxTS)); break;
-
-                case "Full Date":   maxX = 12;  pX = graph2dLeft + (graph2DSizeX * ( (Math.round(this.imgList.get(i).getYear() - minYear) + this.imgList.get(i).getMonth()/maxX) / (Math.round(maxYear - minYear) + 1) ) ); this.originLabel.setText(String.valueOf(Math.round(minYear)) + "/1"); this.xLabel.setText(String.valueOf(Math.round(maxYear)) + "/12"); break;
-            }
-            switch (this.yAxis){
-                case "Red":         maxY = 255; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getRedValue()   / maxY)); this.yLabel.setText("255"); break;
-                case "Green":       maxY = 255; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getGreenValue() / maxY)); this.yLabel.setText("255"); break;
-                case "Blue":        maxY = 255; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getBlueValue()  / maxY)); this.yLabel.setText("255"); break;
-                case "Hue":         maxY = 360; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getHueValue()   / maxY)); this.yLabel.setText("360"); break;
-                case "Saturation":  maxY = 100; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getSatValue()   / maxY)); this.yLabel.setText("100"); break;
-                case "Brightness":  maxY = 100; pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getLumValue()   / maxY)); this.yLabel.setText("100"); break;
-                case "Month":       maxY = 12;  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getMonth()      / maxY)); this.yLabel.setText("12"); break;
-
-                case "Year":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ((Math.round(this.imgList.get(i).getYear()) - minYear) / (maxYear - minYear))); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
-                case "Height":      pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingHeigth() / (maxHeight+5))) ; this.yLabel.setText(String.valueOf(maxHeight)); break;
-                case "Width":       pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getPaintingWidth()  / (maxWidth + 5))); this.yLabel.setText(String.valueOf(maxWidth)); break;
-                case "Area":        pY = graph2dTop + graph2DSizeY - (graph2DSizeY * (this.imgList.get(i).getArea()           / (maxTS + 5)))   ; this.yLabel.setText(String.valueOf(maxTS)); break;
-
-                case "Full Date":   maxY = 12;  pY = graph2dTop + graph2DSizeY - (graph2DSizeY * ( (Math.round(this.imgList.get(i).getYear() - minYear) + this.imgList.get(i).getMonth()/maxY) / (Math.round(maxYear - minYear) + 1) ) ); this.yLabel.setText(String.valueOf(Math.round(maxYear))); break;
-            }
-            point = new Ellipse2D.Double(pX - pointSize / 2, pY - pointSize / 2, pointSize, pointSize);
-
-            if(this.selectedHue == this.imgList.get(i).getHueValue()){
-                g.setColor(new Color(150, 10, 10));
-            } else {
-                g.setColor(new Color(10, 10, 150));
-            }
-            g.fill(point);
-        }
-        g.setColor(new Color(10, 10, 150));
-    }
-
-    /***************************************************************************************************/
     @Override
     public void paintComponent(Graphics g){
         //inicializations
         double circleSize = ((5.0 * this.getWidth())/10);
         double circleLeft = this.getWidth() - ((5.0 * this.getWidth())/10) - circleSize/2;
-        double circleTop = this.getHeight() - ((0.5 * this.getHeight())/10) - circleSize;
+        double circleTop = this.getHeight() - ((5.0 * this.getHeight())/10) - circleSize/2;
         double lumTop = circleTop - this.lumImage.getHeight(this);
         double centerX = circleLeft + circleSize/2;
         double centerY = circleTop + circleSize/2;
@@ -266,8 +138,6 @@ public class GraphPanel extends JPanel {
 
         //draw the points HSV
         paintPoints(g2d, circleLeft, circleTop, circleSize, centerX, centerY, lumTop);
-
-        paint2DGraph(g2d);
     }
 
     /***************************************************************************************************/
