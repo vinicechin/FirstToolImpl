@@ -121,9 +121,9 @@ public class GraphPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         //inicializations
-        double circleSize = ((5.0 * this.getWidth())/10);
+        double circleSize = ((8.5 * this.getWidth())/10);
         double circleLeft = this.getWidth() - ((5.0 * this.getWidth())/10) - circleSize/2;
-        double circleTop = this.getHeight() - ((5.0 * this.getHeight())/10) - circleSize/2;
+        double circleTop = this.getHeight() - ((0.5 * this.getHeight())/10) - circleSize;
         double lumTop = circleTop - this.lumImage.getHeight(this);
         double centerX = circleLeft + circleSize/2;
         double centerY = circleTop + circleSize/2;

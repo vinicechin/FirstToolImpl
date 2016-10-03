@@ -17,14 +17,21 @@ public class ImageShowTool extends JFrame {
     private JRadioButton      byColor;
     private JRadioButton      byYear;
     private JRadioButton      bySize;
-    private ListPanel listPanel;
+    private ListPanel         listPanel;
     private JComboBox<String> colorOrderSelector;
+    private JComboBox<String> categorySelector;
     private JToggleButton     realSizeList;
+    private int               fWidth;
+    private int               fHeight;
 
     public ImageShowTool(String name){
         super(name);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.fWidth = (int)screenSize.getWidth()-200;
+        this.fHeight = (int)screenSize.getHeight()-200;
+        this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
+        //this.setSize(1400, 820);
         initComponents();
-        this.setSize(1400, 820);
     }
 
     private void initComponents(){
@@ -38,6 +45,7 @@ public class ImageShowTool extends JFrame {
         byYear              = new javax.swing.JRadioButton();
         bySize              = new javax.swing.JRadioButton();
         colorOrderSelector  = new javax.swing.JComboBox<>();
+        categorySelector    = new javax.swing.JComboBox<>();
         realSizeList        = new javax.swing.JToggleButton();
         menuBar             = new javax.swing.JMenuBar();
         fileMenu            = new javax.swing.JMenu();
@@ -45,6 +53,7 @@ public class ImageShowTool extends JFrame {
         //create the frame menu File and add buttons to it
         fileMenu.setText("File");
         fileMenu.add(listPanel.getLoadFile());
+        fileMenu.add(listPanel.getLoadFileWithMaps());
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
@@ -52,18 +61,19 @@ public class ImageShowTool extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        listPanel.setPreferredSize(new Dimension(1270,100));
+        //listPanel.setPreferredSize(new Dimension(1270,100));
+        listPanel.setPreferredSize(new Dimension(this.fWidth-130,this.fHeight/8));
 
         //main panel layout
         javax.swing.GroupLayout ImageInfoPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(ImageInfoPanelLayout);
         ImageInfoPanelLayout.setVerticalGroup(
                 ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 575, Short.MAX_VALUE)
+                        .addGap(0, this.fHeight-this.fHeight/8, Short.MAX_VALUE)
         );
         ImageInfoPanelLayout.setHorizontalGroup(
                 ImageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 750, Short.MAX_VALUE)
+                        .addGap(0, this.fWidth-650, Short.MAX_VALUE)
         );
 
         //graph panel layout
@@ -71,7 +81,7 @@ public class ImageShowTool extends JFrame {
         graphPanel.setLayout(graphPanelLayout);
         graphPanelLayout.setVerticalGroup(
                 graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 575, Short.MAX_VALUE)
+                        .addGap(0, this.fHeight-this.fHeight/8, Short.MAX_VALUE)
         );
         graphPanelLayout.setHorizontalGroup(
                 graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,19 +93,19 @@ public class ImageShowTool extends JFrame {
         //data panel layout
         javax.swing.GroupLayout dataPanelLayout = new javax.swing.GroupLayout(dataPanel);
         dataPanel.setLayout(dataPanelLayout);
-        dataPanelLayout.setHorizontalGroup(
-                dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(100, 150, Short.MAX_VALUE)
-        );
         dataPanelLayout.setVerticalGroup(
                 dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 575, Short.MAX_VALUE)
+                        .addGap(0, this.fHeight-this.fHeight/8, Short.MAX_VALUE)
+        );
+        dataPanelLayout.setHorizontalGroup(
+                dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(100, 275, Short.MAX_VALUE)
         );
 
         //list layout
         listScrollPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Images List"));
-        listScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        listScrollPanel.setBounds(0, 0, 1000, 150);
+        listScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        listScrollPanel.setBounds(0, 0, this.fWidth-200, this.fHeight/8-50);
         
         //configure buttons group
         buttonGroup1.add(byColor);
@@ -115,6 +125,10 @@ public class ImageShowTool extends JFrame {
         colorOrderSelector.setSelectedIndex(3);
         colorOrderSelector.addItemListener(evt -> ColorOrderSelectorItemStateChanged(evt));
 
+        categorySelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all","self-portrait","portrait" }));
+        categorySelector.setSelectedIndex(0);
+        categorySelector.addItemListener(evt -> CategorySelectorItemStateChanged(evt));
+
         realSizeList.setFont(new java.awt.Font("Tahoma", 0, 10));
         realSizeList.setText("Real Size");
         realSizeList.addActionListener(evt -> realSizeListActionPerformed(evt));
@@ -131,7 +145,8 @@ public class ImageShowTool extends JFrame {
                                         .addComponent(byColor)
                                         .addComponent(byYear)
                                         .addComponent(bySize)
-                                        .addComponent(colorOrderSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(colorOrderSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(categorySelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(listScrollPanel)
                                 .addContainerGap())
@@ -156,7 +171,9 @@ public class ImageShowTool extends JFrame {
                                                 .addComponent(bySize)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(colorOrderSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(categorySelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,6 +187,12 @@ public class ImageShowTool extends JFrame {
     private void ColorOrderSelectorItemStateChanged(java.awt.event.ItemEvent evt) {
         if(evt.getStateChange() == 1){
             this.listPanel.setColorOrderType(evt.getItem().toString());
+        }
+    }
+
+    private void CategorySelectorItemStateChanged(java.awt.event.ItemEvent evt) {
+        if(evt.getStateChange() == 1){
+            this.listPanel.setCategoryType(evt.getItem().toString());
         }
     }
 

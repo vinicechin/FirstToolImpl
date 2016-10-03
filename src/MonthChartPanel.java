@@ -18,9 +18,13 @@ public class MonthChartPanel extends ChartPanel {
 
     /********************************************************************************************************/
     /** Constructor */
-    public MonthChartPanel(JFreeChart chart, List<ImageInfo> imageList) {
+    public MonthChartPanel(JFreeChart chart) {
         super(chart);
 
+        this.imageList = null;
+    }
+
+    public void setImageList(List<ImageInfo> imageList) {
         this.imageList = imageList;
     }
 
@@ -30,15 +34,17 @@ public class MonthChartPanel extends ChartPanel {
         JFreeChart newChart;
 
         this.pieData = new DefaultPieDataset();
-        for (int i=1; i<=12; i++) {
-            int count = 0;
-            for (ImageInfo j : this.imageList) {
-                if(i == j.getMonth()){
-                    count++;
+        if(this.imageList != null) {
+            for (int i = 1; i <= 12; i++) {
+                int count = 0;
+                for (ImageInfo j : this.imageList) {
+                    if (i == j.getMonth()) {
+                        count++;
+                    }
                 }
+                if (count > 0)
+                    this.pieData.setValue(new DateFormatSymbols().getMonths()[i - 1], count);
             }
-            if(count > 0)
-                this.pieData.setValue(new DateFormatSymbols().getMonths()[i-1],count);
         }
 
         newChart = ChartFactory.createPieChart3D("Month Distribution", this.pieData, true, true, false );

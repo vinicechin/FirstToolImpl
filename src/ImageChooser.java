@@ -46,7 +46,7 @@ public class ImageChooser extends java.util.Observable{
                     float year = Math.round(s.nextFloat());
                     int month = s.nextInt();
                     s.skip("     ");
-                    ImageInfo imageTemp = new ImageInfo(i+1, red, green, blue, rgb, hue, sat, value, pw, ph, (int)year, month, s.nextLine(), "Not Implemented", "Not Implemented", 0.0, 0.0);
+                    ImageInfo imageTemp = new ImageInfo(i+1, red, green, blue, rgb, hue, sat, value, pw, ph, (int)year, month, s.nextLine(), "Not Implemented", "Not Implemented", false, 0.0, 0.0);
                     imageList.add(imageTemp);
                 }
             } finally {
@@ -61,7 +61,7 @@ public class ImageChooser extends java.util.Observable{
         }
     }
 
-    public void loadCSV(String name){
+    public void loadCSV(String name, boolean bMaps){
         this.imageList.clear();
         try {
             BufferedReader br = new BufferedReader(new FileReader(name));
@@ -85,9 +85,14 @@ public class ImageChooser extends java.util.Observable{
                     int month = Integer.parseInt(data[11]);
                     String categoria = data[12];
                     String autor = data[13];
-                    double mLatitude = Double.parseDouble(data[14]);
-                    double mLongitude = Double.parseDouble(data[15]);
-                    ImageInfo imageTemp = new ImageInfo(id, red, green, blue, rgb, hue, sat, brit, pw, ph, year, month, data[16], categoria, autor, mLatitude, mLongitude);
+
+                    double mLatitude = 0.0;
+                    double mLongitude = 0.0;
+                    if(bMaps) {
+                        mLatitude = Double.parseDouble(data[14]);
+                        mLongitude = Double.parseDouble(data[15]);
+                    }
+                    ImageInfo imageTemp = new ImageInfo(id, red, green, blue, rgb, hue, sat, brit, pw, ph, year, month, data[16], categoria, autor, bMaps, mLatitude, mLongitude);
                     imageList.add(imageTemp);
                 }
             } finally {

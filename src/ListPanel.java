@@ -2,6 +2,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import static java.awt.Image.SCALE_SMOOTH;
+import static java.lang.System.exit;
+
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,9 +18,11 @@ import javax.imageio.ImageIO;
  */
 public class ListPanel extends JPanel implements Observer{
     private AbstractAction loadFile;
+    private AbstractAction loadFileWithMaps;
     private ImageChooser imageChooser;
     private String orderType;
     private String colorOrderType;
+    private String categoryType;
     private String listShowType;
     private MainPanel mainPanel;
     private GraphPanel graphPanel;
@@ -33,6 +37,7 @@ public class ListPanel extends JPanel implements Observer{
         this.imageChooser = new ImageChooser();
         this.orderType = "color";
         this.colorOrderType = "RGB";
+        this.categoryType = "all";
         this.listShowType = "modified";
         this.mainPanel = mainPanel;
         this.graphPanel = graphPanel;
@@ -45,7 +50,7 @@ public class ListPanel extends JPanel implements Observer{
         this.addMouseListener(mouseControl);
         this.addMouseMotionListener(mouseControl);
 
-        //load a model from a .txt file
+        //load a model from a .txt or .csv file
         this.loadFile = new AbstractAction("Load File") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,12 +69,13 @@ public class ListPanel extends JPanel implements Observer{
                         extension = chooser.getSelectedFile().getPath().substring(lastpos+1);
                     }
                     if(extension.toLowerCase().equals("csv")) {
-                        imageChooser.loadCSV(chooser.getSelectedFile().getPath());
+                        imageChooser.loadCSV(chooser.getSelectedFile().getPath(), false);
                     }
                     if(extension.toLowerCase().equals("txt")) {
                         imageChooser.loadImages(chooser.getSelectedFile().getPath());
                     }
 
+                    dataPanel.setbMaps(false);
                     loadImages = true;
                     setOrderType(ListPanel.this.orderType);
                 }
@@ -78,6 +84,39 @@ public class ListPanel extends JPanel implements Observer{
                 }
             }
         };
+
+        //load a model from a .cvs file with Maps
+        this.loadFileWithMaps = new AbstractAction("Load File with Maps") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setCurrentDirectory(new File("./images"));
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files (*csv)", "csv");
+                chooser.setFileFilter(filter);
+
+                int returnVal = chooser.showOpenDialog(null);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+                    String extension = "";
+                    int lastpos = chooser.getSelectedFile().getPath().lastIndexOf('.');
+                    if (lastpos > 0) {
+                        extension = chooser.getSelectedFile().getPath().substring(lastpos+1);
+                    }
+                    if(extension.toLowerCase().equals("csv")) {
+                        imageChooser.loadCSV(chooser.getSelectedFile().getPath(), true);
+                    }
+
+                    dataPanel.setbMaps(true);
+                    loadImages = true;
+                    setOrderType(ListPanel.this.orderType);
+                }
+                if (returnVal == JFileChooser.CANCEL_OPTION){
+                    JOptionPane.showMessageDialog(ListPanel.this, "Open command cancelled by user.");
+                }
+            }
+        };
+
         this.loadImages = false;
         this.repaint();
     }
@@ -86,6 +125,10 @@ public class ListPanel extends JPanel implements Observer{
     /** getters and setters */
     public AbstractAction getLoadFile() {
         return loadFile;
+    }
+
+    public AbstractAction getLoadFileWithMaps() {
+        return loadFileWithMaps;
     }
 
     public ImageChooser getImageChooser() {
@@ -98,6 +141,10 @@ public class ListPanel extends JPanel implements Observer{
 
     public String getColorOrderType() {
         return colorOrderType;
+    }
+
+    public String getCategoryType() {
+        return categoryType;
     }
 
     public String getListShowType() {
@@ -131,14 +178,18 @@ public class ListPanel extends JPanel implements Observer{
         if(this.orderType == "color") {
             imageChooser.orderByColor(this.colorOrderType);
             setImagesDisplay();
-            this.repaint();
         }
+    }
+
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType.toLowerCase();
+        this.mainPanel.setCategoryType(this.categoryType);
+        setImagesDisplay();
     }
 
     public void setListShowType(String listShowType) {
         this.listShowType = listShowType;
         setImagesDisplay();
-        this.repaint();
     }
 
     /************************************************************************************/
@@ -156,13 +207,8 @@ public class ListPanel extends JPanel implements Observer{
                 BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
                 // seta no listpanel
                 i.setImgOrig(image);
-                if(image.getWidth() > image.getHeight()){
-                    i.setImgList(image.getScaledInstance(squareWidth, -1, SCALE_SMOOTH));
-                    i.setImgListReal(image.getScaledInstance((int) (squareWidth*i.getPaintingWidth()/maxWidth), -1, SCALE_SMOOTH));
-                } else {
-                    i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
-                    i.setImgListReal(image.getScaledInstance(-1, (int) (squareHeight*i.getPaintingHeigth()/maxHeight), SCALE_SMOOTH));
-                }
+                i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
+                i.setImgListReal(image.getScaledInstance(-1, Math.toIntExact((long) (squareHeight * i.getPaintingHeigth() / maxHeight)), SCALE_SMOOTH));
             } catch (IOException ex) {
                 System.out.println("Não encontrou a imagem " + i.getName());
             }
@@ -187,43 +233,60 @@ public class ListPanel extends JPanel implements Observer{
 
         if(this.loadImages == true){
             for(ImageInfo i : imageChooser.getImageList()){
-                if(i.getPaintingWidth() > maxWidth)
-                    maxWidth = i.getPaintingWidth();
-                if(i.getPaintingHeigth() > maxHeight)
-                    maxHeight = i.getPaintingHeigth();
+                if(this.categoryType == "all" || i.getCategoria().toLowerCase().compareTo(this.categoryType) == 0) {
+                    if (i.getPaintingWidth() > maxWidth)
+                        maxWidth = i.getPaintingWidth();
+                    if (i.getPaintingHeigth() > maxHeight)
+                        maxHeight = i.getPaintingHeigth();
+                }
             }
             this.graphPanel.getImgList().clear();
         }
 
-        for(ImageInfo i : imageChooser.getImageList()){
-            if(this.loadImages == true) {
-                loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
-                this.graphPanel.addHSV(i);
+        ImageInfo firstImage = null;
+        boolean firstSet = false;
+        for(ImageInfo i : imageChooser.getImageList()) {
+            if (this.categoryType == "all" || i.getCategoria().toLowerCase().compareTo(this.categoryType) == 0) {
+                if (this.loadImages == true) {
+                    loadImages(i, squareWidth, squareHeight, maxWidth, maxHeight);
+                    this.graphPanel.addHSV(i);
 
-                // atualiza charts no main panel
-                this.mainPanel.setImageList(this.imageChooser.getImageList());
-                this.mainPanel.repaint();
-            }
-            //seta imageInfo
-            if(this.listShowType == "modified") {
-                setImageInfo(i, i.getImgList().getWidth(this), i.getImgList().getHeight(this), listWidth, squareTop);
-                listWidth += i.getImgList().getWidth(this) + 3;
-            }
-            else {
-                setImageInfo(i, i.getImgListReal().getWidth(this), i.getImgListReal().getHeight(this), listWidth, squareTop);
-                listWidth += i.getImgListReal().getWidth(this) + 3;
+                    // atualiza charts no main panel
+                    this.mainPanel.setImageIntoList(i);
+                }
+                //seta imageInfo
+                if (this.listShowType == "modified") {
+                    try {
+                        setImageInfo(i, i.getImgList().getWidth(this), i.getImgList().getHeight(this), listWidth, squareTop);
+                        listWidth += i.getImgList().getWidth(this) + 3;
+                    } catch(Exception e) {
+                        if(i != null)
+                            System.out.println(i.getName());
+                        else
+                            System.out.println("nimage ull");
+                        exit(1);
+                    }
+                } else {
+                    setImageInfo(i, i.getImgListReal().getWidth(this), i.getImgListReal().getHeight(this), listWidth, squareTop);
+                    listWidth += i.getImgListReal().getWidth(this) + 3;
+                }
+                //seta a imagem q eh carregada primeiro
+                if (!firstSet) {
+                    firstImage = i;
+                    firstSet = true;
+                }
             }
         }
 
+        this.mainPanel.SetImagesIntoSendList(this.mainPanel.getImageList());
+        this.mainPanel.repaint();
         this.loadImages = false;
-        if(imageChooser.getImageList().size() > 0) {
-            if(listWidth > 1270){
-                this.setPreferredSize(new Dimension(listWidth+200,100));
-            } else {
-                this.setPreferredSize(new Dimension(1270,100));
-            }
-            updateImageMain(imageChooser.getImageList().get(0));
+        if(firstImage != null) {
+            this.setPreferredSize(new Dimension(listWidth+50, this.getHeight()));
+            updateImageMain(firstImage);
         }
+        this.revalidate();
+        this.repaint();
     }
     
     @Override
@@ -234,10 +297,12 @@ public class ListPanel extends JPanel implements Observer{
 	
     public void drawImageList(Graphics g){
         for(ImageInfo i : imageChooser.getImageList()){
-            if(this.listShowType == "modified")
-                g.drawImage(i.getImgList(), i.getX(), i.getY(), this);
-            else
-                g.drawImage(i.getImgListReal(), i.getX(), i.getY(), this);
+            if(this.categoryType == "all" || i.getCategoria().toLowerCase().compareTo(this.categoryType) == 0 ) {
+                if (this.listShowType == "modified")
+                    g.drawImage(i.getImgList(), i.getX(), i.getY(), this);
+                else
+                    g.drawImage(i.getImgListReal(), i.getX(), i.getY(), this);
+            }
         }
     }
 

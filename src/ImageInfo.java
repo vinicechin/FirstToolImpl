@@ -14,6 +14,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     private int     month;
     private float	paintingWidth;
     private float	paintingHeigth;
+    private double paintingDiagonal;
 
     private float   redValue;
     private float   greenValue;
@@ -40,7 +41,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     /**********************************************************************************************/
     /** Creator */
-    public ImageInfo(int id, float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, int year, int month, String name, String categoria, String autor, double mLatitude, double mLongitude){
+    public ImageInfo(int id, float redValue, float greenValue, float blueValue, float rgbValue, float hueValue, float satValue, float lumValue, float pw, float ph, int year, int month, String name, String categoria, String autor, boolean bMaps, double mLatitude, double mLongitude){
         this.name = name;
         this.year = year;
         this.month = month;
@@ -61,17 +62,21 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
         int zoom =12;
         this.googleImg = null;
-        try {
-            String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+this.mLatitude+","+this.mLongitude+"&zoom="+zoom+"&size=612x612&scale=2&maptype=roadmap";
-            URL url = new URL(imageUrl);
-            InputStream is = url.openStream();
+        if(bMaps) {
+            try {
+                String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + this.mLatitude + "," + this.mLongitude + "&zoom=" + zoom + "&size=300x300&scale=2&maptype=roadmap&markers=color:red%7Clabel:Local%7C"+ this.mLatitude +","+ this.mLongitude+"&format=jpg";
+                URL url = new URL(imageUrl);
+                InputStream is = url.openStream();
 
-            this.googleImg = ImageIO.read(is);
+                this.googleImg = ImageIO.read(is);
 
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        this.paintingDiagonal = Math.sqrt(Math.pow(this.paintingWidth,2) + Math.pow(this.paintingHeigth,2));
     }
 
     /**********************************************************************************************/
@@ -180,6 +185,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
         return googleImg;
     }
 
+    public double getPaintingDiagonal() {
+        return paintingDiagonal;
+    }
+
     /**********************************************************************************************/
     /** Setters */
     public void setName(String name) {
@@ -272,6 +281,10 @@ public class ImageInfo implements Comparable<ImageInfo>{
 
     public void setGoogleImg(Image googleImg) {
         this.googleImg = googleImg;
+    }
+
+    public void setPaintingDiagonal(double paintingDiagonal) {
+        this.paintingDiagonal = paintingDiagonal;
     }
 
     /**********************************************************************************************/

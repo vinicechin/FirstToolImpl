@@ -22,9 +22,13 @@ public class ScatterPlotPanel extends ChartPanel{
 
     /********************************************************************************************************/
     /** Contructor */
-    public ScatterPlotPanel(JFreeChart chart, List<ImageInfo> imageList) {
+    public ScatterPlotPanel(JFreeChart chart) {
         super(chart);
 
+        this.imageList = null;
+    }
+
+    public void setImageList(List<ImageInfo> imageList) {
         this.imageList = imageList;
     }
 
@@ -39,46 +43,94 @@ public class ScatterPlotPanel extends ChartPanel{
 
         this.scatterDataset = new XYSeriesCollection();
 
-        for (ImageInfo i : this.imageList) {
-            switch (xAxis){
-                case "Red":         xvalue = i.getRedValue(); break;
-                case "Green":       xvalue = i.getGreenValue(); break;
-                case "Blue":        xvalue = i.getBlueValue(); break;
-                case "Hue":         xvalue = i.getHueValue(); break;
-                case "Saturation":  xvalue = i.getSatValue(); break;
-                case "Brightness":  xvalue = i.getLumValue(); break;
-                case "Month":       xvalue = i.getMonth(); break;
+        if(this.imageList != null) {
+            for (ImageInfo i : this.imageList) {
+                switch (xAxis) {
+                    case "Red":
+                        xvalue = i.getRedValue();
+                        break;
+                    case "Green":
+                        xvalue = i.getGreenValue();
+                        break;
+                    case "Blue":
+                        xvalue = i.getBlueValue();
+                        break;
+                    case "Hue":
+                        xvalue = i.getHueValue();
+                        break;
+                    case "Saturation":
+                        xvalue = i.getSatValue();
+                        break;
+                    case "Brightness":
+                        xvalue = i.getLumValue();
+                        break;
+                    case "Month":
+                        xvalue = i.getMonth();
+                        break;
 
-                case "Year":        xvalue = Math.round(i.getYear()); break;
-                case "Height":      xvalue = i.getHeight(); break;
-                case "Width":       xvalue = i.getWidth(); break;
-                case "Area":        xvalue = i.getArea(); break;
+                    case "Year":
+                        xvalue = Math.round(i.getYear());
+                        break;
+                    case "Height":
+                        xvalue = i.getHeight();
+                        break;
+                    case "Width":
+                        xvalue = i.getWidth();
+                        break;
+                    case "Area":
+                        xvalue = i.getArea();
+                        break;
 
-                case "Full Date":   xvalue = (Math.round(i.getYear()) + ((i.getMonth()-0.5)/12.0));
-                    break;
-            }
-            switch (yAxis){
-                case "Red":         yvalue = i.getRedValue(); break;
-                case "Green":       yvalue = i.getGreenValue(); break;
-                case "Blue":        yvalue = i.getBlueValue(); break;
-                case "Hue":         yvalue = i.getHueValue(); break;
-                case "Saturation":  yvalue = i.getSatValue(); break;
-                case "Brightness":  yvalue = i.getLumValue(); break;
-                case "Month":       yvalue = i.getMonth(); break;
+                    case "Full Date":
+                        xvalue = (Math.round(i.getYear()) + ((i.getMonth() - 0.5) / 12.0));
+                        break;
+                }
+                switch (yAxis) {
+                    case "Red":
+                        yvalue = i.getRedValue();
+                        break;
+                    case "Green":
+                        yvalue = i.getGreenValue();
+                        break;
+                    case "Blue":
+                        yvalue = i.getBlueValue();
+                        break;
+                    case "Hue":
+                        yvalue = i.getHueValue();
+                        break;
+                    case "Saturation":
+                        yvalue = i.getSatValue();
+                        break;
+                    case "Brightness":
+                        yvalue = i.getLumValue();
+                        break;
+                    case "Month":
+                        yvalue = i.getMonth();
+                        break;
 
-                case "Year":        yvalue = Math.round(i.getYear()); break;
-                case "Height":      yvalue = i.getHeight(); break;
-                case "Width":       yvalue = i.getWidth(); break;
-                case "Area":        yvalue = i.getArea(); break;
+                    case "Year":
+                        yvalue = Math.round(i.getYear());
+                        break;
+                    case "Height":
+                        yvalue = i.getHeight();
+                        break;
+                    case "Width":
+                        yvalue = i.getWidth();
+                        break;
+                    case "Area":
+                        yvalue = i.getArea();
+                        break;
 
-                case "Full Date":   xvalue = (Math.round(i.getYear()) + ((i.getMonth()-0.5)/12.0));
-            }
+                    case "Full Date":
+                        xvalue = (Math.round(i.getYear()) + ((i.getMonth() - 0.5) / 12.0));
+                }
 
-            if(i == selectedImage){
-                selectedSeries = new XYSeries("Selected");
-                selectedSeries.add(xvalue, yvalue);
-            } else {
-                series1.add(xvalue, yvalue);
+                if (i == selectedImage) {
+                    selectedSeries = new XYSeries("Selected");
+                    selectedSeries.add(xvalue, yvalue);
+                } else {
+                    series1.add(xvalue, yvalue);
+                }
             }
         }
 
