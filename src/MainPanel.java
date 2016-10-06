@@ -11,26 +11,30 @@ import java.util.List;
  */
 public class MainPanel extends JPanel {
 
-    private MonthChartPanel  monthsPieChartPanel;
-    private ScatterPlotPanel scatterTestPanel;
-    private List<ImageInfo>  imageList;
-    private List<ImageInfo>  imageListToSend;
-    private int              selected;
-    private String           xAxis;
-    private String           yAxis;
-    private JComboBox        vertexSelectorX;
-    private JComboBox        vertexSelectorY;
-    private ImageInfo        selectedImage;
-    private String           categoryType;
+    private MonthChartPanel    monthsPieChartPanel;
+    private ScatterPlotPanel   scatterTestPanel;
+    private ParallelCoordPanel parallelCoordPanel;
+    private List<ImageInfo>    imageList;
+    private List<ImageInfo>    imageListToSend;
+    private int                selected;
+    private String             xAxis;
+    private String             yAxis;
+    private JComboBox          vertexSelectorX;
+    private JComboBox          vertexSelectorY;
+    private ImageInfo          selectedImage;
+    private String             categoryType;
 
     /********************************************************************************************************/
     /** Contructor */
     public MainPanel(){
         super();
-        this.selected = 1;
+        this.selected = 2;
 
         this.imageList = null;
         this.imageListToSend = null;
+        this.parallelCoordPanel = null;
+        this.monthsPieChartPanel = null;
+        this.scatterTestPanel = null;
         this.categoryType = "all";
 
         //red: 255 double, green: 255 double, blue: 255 double, hue: 360 double, sat: 100 double, bri: 100 double, year: n double(int), month: 12 int, height: m double, width: i double, total size: m*i double
@@ -74,6 +78,14 @@ public class MainPanel extends JPanel {
         return monthsPieChartPanel;
     }
 
+    public ScatterPlotPanel getScatterTestPanel() {
+        return scatterTestPanel;
+    }
+
+    public ParallelCoordPanel getParallelCoordPanel() {
+        return parallelCoordPanel;
+    }
+
     public List<ImageInfo> getImageList() {
         return imageList;
     }
@@ -86,6 +98,14 @@ public class MainPanel extends JPanel {
     /** Setters */
     public void setMonthsPieChartPanel(MonthChartPanel monthsPieChartPanel) {
         this.monthsPieChartPanel = monthsPieChartPanel;
+    }
+
+    public void setScatterTestPanel(ScatterPlotPanel scatterTestPanel) {
+        this.scatterTestPanel = scatterTestPanel;
+    }
+
+    public void setParallelCoordPanel(ParallelCoordPanel parallelCoordPanel) {
+        this.parallelCoordPanel = parallelCoordPanel;
     }
 
     public void setImageList(List<ImageInfo> imageList) {
@@ -139,6 +159,10 @@ public class MainPanel extends JPanel {
                 this.scatterTestPanel = new ScatterPlotPanel(ChartFactory.createPieChart("Chart", new DefaultPieDataset(), true, true, false));
                 this.add(this.scatterTestPanel);
             }
+            if (this.parallelCoordPanel == null) {
+                this.parallelCoordPanel = new ParallelCoordPanel();
+                this.add(this.parallelCoordPanel);
+            }
 
             // month pie chart
             if(selected == 0) {
@@ -146,12 +170,19 @@ public class MainPanel extends JPanel {
                 this.monthsPieChartPanel.setBounds(5, 5, this.getWidth() - 10, this.getHeight() - 10);
                 this.monthsPieChartPanel.updatePieData();
             }
+            // scatter plot
             if(selected == 1) {
                 this.scatterTestPanel.setImageList(this.imageListToSend);
                 this.scatterTestPanel.setBounds(5, 25, this.getWidth() - 10, this.getHeight() - 30);
                 this.scatterTestPanel.UpdateScatterDataset(this.xAxis, this.yAxis, this.selectedImage);
             }
-            // other chart
+            // linear lines
+            if(selected == 2){
+                this.parallelCoordPanel.setImageList(this.imageListToSend);
+                this.parallelCoordPanel.setSelected(this.selectedImage);
+                this.parallelCoordPanel.setBounds(5, 25, this.getWidth() - 10, this.getHeight() - 30);
+                this.parallelCoordPanel.repaint();
+            }
 
         }
     }

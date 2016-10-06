@@ -72,10 +72,10 @@ public class ScatterPlotPanel extends ChartPanel{
                         xvalue = Math.round(i.getYear());
                         break;
                     case "Height":
-                        xvalue = i.getHeight();
+                        xvalue = i.getPaintingHeigth();
                         break;
                     case "Width":
-                        xvalue = i.getWidth();
+                        xvalue = i.getPaintingWidth();
                         break;
                     case "Area":
                         xvalue = i.getArea();
@@ -112,10 +112,10 @@ public class ScatterPlotPanel extends ChartPanel{
                         yvalue = Math.round(i.getYear());
                         break;
                     case "Height":
-                        yvalue = i.getHeight();
+                        yvalue = i.getPaintingHeigth();
                         break;
                     case "Width":
-                        yvalue = i.getWidth();
+                        yvalue = i.getPaintingWidth();
                         break;
                     case "Area":
                         yvalue = i.getArea();
