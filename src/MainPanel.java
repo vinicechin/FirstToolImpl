@@ -178,7 +178,7 @@ public class MainPanel extends JPanel {
             }
             // linear lines
             if(selected == 2){
-                this.parallelCoordPanel.setImageList(this.imageListToSend);
+                this.parallelCoordPanel.setImageList(this.imageListToSend, this.selectedImage);
                 this.parallelCoordPanel.setSelected(this.selectedImage);
                 this.parallelCoordPanel.setBounds(5, 25, this.getWidth() - 10, this.getHeight() - 30);
                 this.parallelCoordPanel.repaint();

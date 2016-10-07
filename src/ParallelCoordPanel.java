@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 
 /**
@@ -12,13 +11,50 @@ public class ParallelCoordPanel extends JPanel{
     private Double[][] dataMatrix;
     private Double[]   maxArray;
     private Double[]   minArray;
+    private String[]   namesArray;
     private ImageInfo  selected;
+    private int        selectedIndex;
+    private JFormattedTextField minDateSelector;
+    private JFormattedTextField maxDateSelector;
+    private int        minDate;
+    private int        maxDate;
 
     public ParallelCoordPanel(){
         super();
 
         this.imageList = null;
         this.selected  = null;
+        this.selectedIndex = -1;
+        this.minDate   = 1885;
+        this.maxDate   = 1887;
+
+        this.minDateSelector  = new javax.swing.JFormattedTextField(new Integer(this.minDate));
+        this.add(this.minDateSelector);
+        this.minDateSelector.addPropertyChangeListener("value", evt -> {
+            if(evt.getNewValue() != null) {
+                minDate = (int) evt.getNewValue();
+                if(maxDate <= minDate){
+                    minDate = maxDate-1;
+                    minDateSelector.setText(String.valueOf(minDate));
+                }
+                setImageList(imageList,selected);
+            }
+        });
+        this.minDateSelector.setVisible(false);
+
+        this.maxDateSelector  = new javax.swing.JFormattedTextField(new Integer(this.maxDate));
+        this.add(this.maxDateSelector);
+        this.maxDateSelector.addPropertyChangeListener("value", evt -> {
+            if(evt.getNewValue() != null) {
+                maxDate = (int) evt.getNewValue();
+                if(maxDate <= minDate){
+                    maxDate = minDate+1;
+                    maxDateSelector.setText(String.valueOf(maxDate));
+                }
+                setImageList(imageList,selected);
+            }
+        });
+        this.maxDateSelector.setVisible(false);
     }
 
     /******************************************************************************************************************/
@@ -31,7 +67,7 @@ public class ParallelCoordPanel extends JPanel{
     }
 
     /******************************************************************************************************************/
-    public void setImageList(List<ImageInfo> imageList) {
+    public void setImageList(List<ImageInfo> imageList, ImageInfo selectedImage) {
         double maxYear = 0, maxHeight = 0, maxWidth = 0, maxArea = 0;
         double minYear = 3000, minHeight = 1000, minWidth = 1000;
 
@@ -77,7 +113,21 @@ public class ParallelCoordPanel extends JPanel{
                 maxArea = this.dataMatrix[cont][11];
             }
 
+            if (i == selectedImage) {
+                this.selected = i;
+                this.selectedIndex = cont;
+            }
+
             cont++;
+        }
+
+        if(this.maxDate < (int) maxYear) {
+            this.maxDate = (int) maxYear;
+            maxDateSelector.setText(String.valueOf(maxDate));
+        }
+        if(this.minDate > (int) minYear) {
+            this.minDate = (int) minYear;
+            minDateSelector.setText(String.valueOf(minDate));
         }
 
         this.maxArray = new Double[12];
@@ -87,9 +137,9 @@ public class ParallelCoordPanel extends JPanel{
         this.maxArray[3]  = Double.valueOf(360); //hue
         this.maxArray[4]  = Double.valueOf(100); //sat
         this.maxArray[5]  = Double.valueOf(100); //brit
-        this.maxArray[6]  = Double.valueOf(maxYear+2); //full date
-        this.maxArray[7]  = Double.valueOf(maxYear+1); //year
-        this.maxArray[8]  = Double.valueOf(12);  //month
+        this.maxArray[6]  = Double.valueOf(this.maxDate+2);//Double.valueOf(maxYear+2); //full date
+        this.maxArray[7]  = Double.valueOf(this.maxDate+1);//Double.valueOf(maxYear+1); //year
+        this.maxArray[8]  = Double.valueOf(13);  //month
         this.maxArray[9]  = Double.valueOf(maxHeight+1); //height
         this.maxArray[10] = Double.valueOf(maxWidth+1); //width
         this.maxArray[11] = Double.valueOf(maxArea+1); //area
@@ -101,13 +151,28 @@ public class ParallelCoordPanel extends JPanel{
         this.minArray[3]  = Double.valueOf(0); //hue
         this.minArray[4]  = Double.valueOf(0); //sat
         this.minArray[5]  = Double.valueOf(0); //brit
-        this.minArray[6]  = Double.valueOf(minYear-1); //full date
-        this.minArray[7]  = Double.valueOf(minYear-1); //year
-        this.minArray[8]  = Double.valueOf(1);  //month
+        this.minArray[6]  = Double.valueOf(this.minDate-1);//Double.valueOf(minYear-1); //full date
+        this.minArray[7]  = Double.valueOf(this.minDate-1);//Double.valueOf(minYear-1); //year
+        this.minArray[8]  = Double.valueOf(0);  //month
         this.minArray[9]  = Double.valueOf(minHeight-1); //height
         this.minArray[10] = Double.valueOf(minWidth-1); //width
-        this.minArray[11] = Double.valueOf(0); //area
+        this.minArray[11] = Double.valueOf(1); //area
 
+        this.namesArray = new String[12];
+        this.namesArray[0]  = "Red";
+        this.namesArray[1]  = "Green";
+        this.namesArray[2]  = "Blue";
+        this.namesArray[3]  = "Hue";
+        this.namesArray[4]  = "Sat";
+        this.namesArray[5]  = "Brit";
+        this.namesArray[6]  = "Date";
+        this.namesArray[7]  = "Year";
+        this.namesArray[8]  = "Month";
+        this.namesArray[9]  = "Height";
+        this.namesArray[10]  = "Width";
+        this.namesArray[11]  = "Area";
+
+        this.repaint();
     }
 
     public void setSelected(ImageInfo selected) {
@@ -117,7 +182,6 @@ public class ParallelCoordPanel extends JPanel{
     /******************************************************************************************************************/
     public void drawDataLine(Graphics2D g, double x1, double y1, double x2, double y2){
         //desenha linha do ponto (x1,y1) ate o ponto (x2,y2)
-        g.setColor(new Color(10, 10, 150));
         g.setStroke(new BasicStroke(2));
         g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
     }
@@ -136,20 +200,42 @@ public class ParallelCoordPanel extends JPanel{
                 posY = (int) (graphTop + j * (graphHeight / 4));
                 g.drawLine(posX-2, posY , posX+2, posY);
             }
-        }
 
-        //draw data
-        for(int i = 0; i < this.dataMatrix.length; i++){
-            for(int j = 0; j < this.dataMatrix[i].length-1; j++){
-                double posX1 = (graphLeft   + j                        * (graphWidth / 12));
-                double posX2 = (graphLeft   + (j+1)                    * (graphWidth / 12));
-                double posY1 = (graphBottom - ((this.dataMatrix[i][j]- this.minArray[j])   * (graphHeight / (this.maxArray[j] - this.minArray[j]))));
-                double posY2 = (graphBottom - ((this.dataMatrix[i][j+1]- this.minArray[j+1]) * (graphHeight / (this.maxArray[j+1] - this.minArray[j+1]))));
+            g.drawString(String.valueOf(this.minArray[i]),posX-6,(int)(graphBottom+20));
+            g.drawString(String.valueOf(this.maxArray[i]),posX-6,(int)(graphTop-10));
+            g.drawString(this.namesArray[i],posX-6,(int)(graphBottom+45));
 
-                drawDataLine(g,posX1,posY1,posX2,posY2);
+            if(i == 7){
+                this.maxDateSelector.setBounds(posX-6, (int)(graphTop-25), 50, 22);
+                this.maxDateSelector.setVisible(true);
+                this.minDateSelector.setBounds(posX-6, (int)(graphBottom+5), 50, 22);
+                this.minDateSelector.setVisible(true);
             }
         }
 
+        //draw data
+        g.setColor(new Color(20, 80, 180));
+        for(int i = 0; i < this.dataMatrix.length; i++){
+            if(this.selectedIndex != i) {
+                for (int j = 0; j < this.dataMatrix[i].length - 1; j++) {
+                    double posX1 = (graphLeft + j * (graphWidth / 12));
+                    double posX2 = (graphLeft + (j + 1) * (graphWidth / 12));
+                    double posY1 = (graphBottom - ((this.dataMatrix[i][j] - this.minArray[j]) * (graphHeight / (this.maxArray[j] - this.minArray[j]))));
+                    double posY2 = (graphBottom - ((this.dataMatrix[i][j + 1] - this.minArray[j + 1]) * (graphHeight / (this.maxArray[j + 1] - this.minArray[j + 1]))));
+
+                    drawDataLine(g, posX1, posY1, posX2, posY2);
+                }
+            }
+        }
+        g.setColor(new Color(200, 10, 10));
+        for(int j = 0; j < this.dataMatrix[this.selectedIndex].length-1; j++){
+            double posX1 = (graphLeft   + j                        * (graphWidth / 12));
+            double posX2 = (graphLeft   + (j+1)                    * (graphWidth / 12));
+            double posY1 = (graphBottom - ((this.dataMatrix[this.selectedIndex][j]- this.minArray[j])   * (graphHeight / (this.maxArray[j] - this.minArray[j]))));
+            double posY2 = (graphBottom - ((this.dataMatrix[this.selectedIndex][j+1]- this.minArray[j+1]) * (graphHeight / (this.maxArray[j+1] - this.minArray[j+1]))));
+
+            drawDataLine(g,posX1,posY1,posX2,posY2);
+        }
     }
 
     @Override
