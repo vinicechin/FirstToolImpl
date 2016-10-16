@@ -81,7 +81,7 @@ public class ParallelCoordPanel extends JPanel{
             this.dataMatrix[cont][3]  = Double.valueOf(i.getHueValue());
             this.dataMatrix[cont][4]  = Double.valueOf(i.getSatValue());
             this.dataMatrix[cont][5]  = Double.valueOf(i.getLumValue());
-            this.dataMatrix[cont][6]  = (Math.round(i.getYear()) + ((i.getMonth() - 0.5) / 12.0));
+            this.dataMatrix[cont][6]  = (Math.round(i.getYear()) + ((i.getMonth()) / 12.0));
             this.dataMatrix[cont][7]  = Double.valueOf(Math.round(i.getYear()));
             this.dataMatrix[cont][8]  = Double.valueOf(i.getMonth());
             this.dataMatrix[cont][9]  = Double.valueOf(i.getPaintingHeigth());
@@ -121,8 +121,8 @@ public class ParallelCoordPanel extends JPanel{
             cont++;
         }
 
-        if(this.maxDate < (int) maxYear) {
-            this.maxDate = (int) maxYear;
+        if(this.maxDate < (int) maxYear+1) {
+            this.maxDate = (int) maxYear+1;
             maxDateSelector.setText(String.valueOf(maxDate));
         }
         if(this.minDate > (int) minYear) {
@@ -137,12 +137,12 @@ public class ParallelCoordPanel extends JPanel{
         this.maxArray[3]  = Double.valueOf(360); //hue
         this.maxArray[4]  = Double.valueOf(100); //sat
         this.maxArray[5]  = Double.valueOf(100); //brit
-        this.maxArray[6]  = Double.valueOf(this.maxDate+2);//Double.valueOf(maxYear+2); //full date
-        this.maxArray[7]  = Double.valueOf(this.maxDate+1);//Double.valueOf(maxYear+1); //year
-        this.maxArray[8]  = Double.valueOf(13);  //month
+        this.maxArray[6]  = Double.valueOf(this.maxDate);//Double.valueOf(maxYear+2); //full date
+        this.maxArray[7]  = Double.valueOf(this.maxDate);//Double.valueOf(maxYear+1); //year
+        this.maxArray[8]  = Double.valueOf(12);  //month
         this.maxArray[9]  = Double.valueOf(maxHeight+1); //height
         this.maxArray[10] = Double.valueOf(maxWidth+1); //width
-        this.maxArray[11] = Double.valueOf(maxArea+1); //area
+        this.maxArray[11] = Double.valueOf(maxArea); //area
 
         this.minArray = new Double[12];
         this.minArray[0]  = Double.valueOf(0); //red
@@ -151,12 +151,12 @@ public class ParallelCoordPanel extends JPanel{
         this.minArray[3]  = Double.valueOf(0); //hue
         this.minArray[4]  = Double.valueOf(0); //sat
         this.minArray[5]  = Double.valueOf(0); //brit
-        this.minArray[6]  = Double.valueOf(this.minDate-1);//Double.valueOf(minYear-1); //full date
-        this.minArray[7]  = Double.valueOf(this.minDate-1);//Double.valueOf(minYear-1); //year
-        this.minArray[8]  = Double.valueOf(0);  //month
-        this.minArray[9]  = Double.valueOf(minHeight-1); //height
-        this.minArray[10] = Double.valueOf(minWidth-1); //width
-        this.minArray[11] = Double.valueOf(1); //area
+        this.minArray[6]  = Double.valueOf(this.minDate);//Double.valueOf(minYear-1); //full date
+        this.minArray[7]  = Double.valueOf(this.minDate);//Double.valueOf(minYear-1); //year
+        this.minArray[8]  = Double.valueOf(1);  //month
+        this.minArray[9]  = Double.valueOf(0); //height
+        this.minArray[10] = Double.valueOf(0); //width
+        this.minArray[11] = Double.valueOf(0); //area
 
         this.namesArray = new String[12];
         this.namesArray[0]  = "Red";
@@ -200,9 +200,15 @@ public class ParallelCoordPanel extends JPanel{
                 posY = (int) (graphTop + j * (graphHeight / 4));
                 g.drawLine(posX-2, posY , posX+2, posY);
             }
+            if(i == 0 || i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8) {
+                g.drawString(String.valueOf(this.minArray[i].intValue()), posX - 6, (int) (graphBottom + 20));
+                g.drawString(String.valueOf(this.maxArray[i].intValue()), posX - 6, (int) (graphTop - 10));
+            }
+            else {
+                g.drawString(String.valueOf(this.minArray[i]), posX - 6, (int) (graphBottom + 20));
+                g.drawString(String.valueOf(this.maxArray[i]), posX - 6, (int) (graphTop - 10));
+            }
 
-            g.drawString(String.valueOf(this.minArray[i]),posX-6,(int)(graphBottom+20));
-            g.drawString(String.valueOf(this.maxArray[i]),posX-6,(int)(graphTop-10));
             g.drawString(this.namesArray[i],posX-6,(int)(graphBottom+45));
 
             if(i == 7){
@@ -214,7 +220,7 @@ public class ParallelCoordPanel extends JPanel{
         }
 
         //draw data
-        g.setColor(new Color(20, 80, 180));
+        g.setColor(new Color(77, 162, 200));
         for(int i = 0; i < this.dataMatrix.length; i++){
             if(this.selectedIndex != i) {
                 for (int j = 0; j < this.dataMatrix[i].length - 1; j++) {
@@ -229,8 +235,8 @@ public class ParallelCoordPanel extends JPanel{
         }
         g.setColor(new Color(200, 10, 10));
         for(int j = 0; j < this.dataMatrix[this.selectedIndex].length-1; j++){
-            double posX1 = (graphLeft   + j                        * (graphWidth / 12));
-            double posX2 = (graphLeft   + (j+1)                    * (graphWidth / 12));
+            double posX1 = (graphLeft   + j     * (graphWidth / 12));
+            double posX2 = (graphLeft   + (j+1) * (graphWidth / 12));
             double posY1 = (graphBottom - ((this.dataMatrix[this.selectedIndex][j]- this.minArray[j])   * (graphHeight / (this.maxArray[j] - this.minArray[j]))));
             double posY2 = (graphBottom - ((this.dataMatrix[this.selectedIndex][j+1]- this.minArray[j+1]) * (graphHeight / (this.maxArray[j+1] - this.minArray[j+1]))));
 

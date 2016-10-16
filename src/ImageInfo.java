@@ -55,7 +55,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
         this.satValue = satValue;
         this.lumValue = lumValue;
         this.id = id;
-        this.categoria = categoria;
+        this.categoria = categoria.toLowerCase();
         this.autor = autor;
         this.mLatitude = mLatitude;
         this.mLongitude = mLongitude;
@@ -318,7 +318,7 @@ public class ImageInfo implements Comparable<ImageInfo>{
     public int compareToByYear(ImageInfo o) {
         /* For Ascending order*/
         if(this.year - o.getYear() == 0){
-            return this.id - o.getId();
+            return this.month - o.getMonth();
         }
         return ((this.year - o.getYear())*100);
 

@@ -28,9 +28,11 @@ public class SelectionController extends MouseAdapter implements WindowListener{
         if (e.getButton() == MouseEvent.BUTTON1) {
             //selects clicked picture if the click was made over a picture
             for (ImageInfo i : this.listPanel.getImageChooser().getImageList()) {
-                if (i.contains(e.getPoint())) {
-                    this.listPanel.updateImageMain(i);
-                    break;
+                if (this.listPanel.getCategoryType() == "all" || i.getCategoria().toLowerCase().compareTo(this.listPanel.getCategoryType()) == 0) {
+                    if (i.contains(e.getPoint())) {
+                        this.listPanel.updateImageMain(i);
+                        break;
+                    }
                 }
             }
             //repaint the panel

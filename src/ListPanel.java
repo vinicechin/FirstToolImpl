@@ -1,3 +1,6 @@
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -204,14 +207,34 @@ public class ListPanel extends JPanel implements Observer{
     //carrega imagens dos arquivos
     public void loadImages(ImageInfo i, int squareWidth, int squareHeight, float maxWidth, float maxHeight){
         try {
-                BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
-                // seta no listpanel
-                i.setImgOrig(image);
-                i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
-                i.setImgListReal(image.getScaledInstance(-1, Math.toIntExact((long) (squareHeight * i.getPaintingHeigth() / maxHeight)), SCALE_SMOOTH));
-            } catch (IOException ex) {
-                System.out.println("Não encontrou a imagem " + i.getName());
+            ImageReadParam subSamplingParam = new ImageReadParam();
+            subSamplingParam.setSourceSubsampling(3, 3, 0, 0);
+
+            ImageInputStream iis = ImageIO.createImageInputStream(new File("./images/" + i.getName()));
+
+            // Find all image readers that recognize the image format
+            Iterator iter = ImageIO.getImageReaders(iis);
+            if (!iter.hasNext()) {
+                // No readers found
+                return;
             }
+
+            // Use the first reader
+            ImageReader reader = (ImageReader)iter.next();
+            reader.setInput(iis, false);
+            BufferedImage image = reader.read(0,subSamplingParam);
+
+            //BufferedImage image = ImageIO.read(new File("./images/" + i.getName()));
+            // seta no listpanel
+            i.setImgOrig(image);
+            i.setImgList(image.getScaledInstance(-1, squareHeight, SCALE_SMOOTH));
+            i.setImgListReal(image.getScaledInstance(-1, Math.toIntExact((long) (squareHeight * i.getPaintingHeigth() / maxHeight)), SCALE_SMOOTH));
+
+            image.flush();
+
+        } catch (IOException ex) {
+            System.out.println("Não encontrou a imagem " + i.getName());
+        }
     }
     
     //atualiza main com a imagem selecionada

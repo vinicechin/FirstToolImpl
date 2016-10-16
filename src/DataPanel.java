@@ -19,6 +19,7 @@ import static java.awt.Image.SCALE_SMOOTH;
  */
 public class DataPanel extends JPanel{
     private int year;
+    private String month;
     private float pictureWidth;
     private float pictureHeight;
     private boolean imageLoaded;
@@ -43,7 +44,7 @@ public class DataPanel extends JPanel{
 
         imgWidth= new JLabel("Largura: ", JLabel.LEFT);
         imgHeight= new JLabel("Altura: ", JLabel.LEFT);
-        imgYear= new JLabel("Ano: ", JLabel.LEFT);
+        imgYear= new JLabel("Data: ", JLabel.LEFT);
         this.add(imgWidth);
         this.add(imgHeight);
         this.add(imgYear);
@@ -87,6 +88,20 @@ public class DataPanel extends JPanel{
         this.pictureWidth = img.getPaintingWidth();
         this.pictureHeight = img.getPaintingHeigth();
         this.year = img.getYear();
+        switch(img.getMonth()){
+            case  1: this.month = "janeiro"; break;
+            case  2: this.month = "fevereiro"; break;
+            case  3: this.month = "março"; break;
+            case  4: this.month = "abril"; break;
+            case  5: this.month = "maio"; break;
+            case  6: this.month = "junho"; break;
+            case  7: this.month = "julho"; break;
+            case  8: this.month = "agosto"; break;
+            case  9: this.month = "setembro"; break;
+            case 10: this.month = "outubro"; break;
+            case 11: this.month = "novembro"; break;
+            case 12: this.month = "dezembro"; break;
+        }
 
         //desenha homem para comparar size
         this.manImage = this.manImage.getScaledInstance(manWidth, manHeight, Image.SCALE_SMOOTH);
@@ -128,7 +143,7 @@ public class DataPanel extends JPanel{
         if(this.imageLoaded) {
             imgWidth.setText("Largura: " + String.valueOf(this.pictureWidth));
             imgHeight.setText("Altura:     " + String.valueOf(this.pictureHeight));
-            imgYear.setText("Ano:         " + String.valueOf(this.year));
+            imgYear.setText("Data:        " + this.month + "/" + String.valueOf(this.year));
         }
     }
 }

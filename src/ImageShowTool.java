@@ -125,7 +125,7 @@ public class ImageShowTool extends JFrame {
         colorOrderSelector.setSelectedIndex(3);
         colorOrderSelector.addItemListener(evt -> ColorOrderSelectorItemStateChanged(evt));
 
-        categorySelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all","self-portrait","portrait" }));
+        categorySelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all","self-portrait","peasant life","cityscape","landscape","figures","still life", "nature", "interior" }));
         categorySelector.setSelectedIndex(0);
         categorySelector.addItemListener(evt -> CategorySelectorItemStateChanged(evt));
 
